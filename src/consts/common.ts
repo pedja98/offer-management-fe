@@ -27,7 +27,6 @@ export const GridFieldTypes = {
   MULTISELECT: 'multiselect',
   AREA: 'area',
   AUTOCOMPLETE: 'autocomplete',
-  DATE_TIME: 'dateTime',
   BUTTON: 'button',
 } as const
 

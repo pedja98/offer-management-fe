@@ -4,6 +4,7 @@
   "status": "Status",
   "assignedTo": "Assigned to",
   "temporaryAssignedTo": "Temp. assigned to",
+  "errorRetrievingError": "Error occur while retrieving company data",
   "companyNotFound": "Company not found",
   "statuses": {
     "active": "Active",
