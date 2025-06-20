@@ -55,7 +55,11 @@ module.exports = {
       template: './public/index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env.REACT_APP_OFFER_API': JSON.stringify(process.env.REACT_APP_OFFER_API),
+      'process.env.REACT_APP_GW_API': JSON.stringify(process.env.REACT_APP_GW_API),
+      'process.env.REACT_APP_CRM_API': JSON.stringify(process.env.REACT_APP_CRM_API),
+      'process.env.REACT_APP_PC_API': JSON.stringify(process.env.REACT_APP_PC_API),
+      'process.env.REACT_APP_OM_API': JSON.stringify(process.env.REACT_APP_OM_API),
+      'process.env.REACT_APP_OM_FE': JSON.stringify(process.env.REACT_APP_OM_FE),
     }),
   ],
 }

@@ -4,5 +4,6 @@
     "offer": "Offer",
     "tariffAndBenefits": "Tariff and benefits",
     "approval": "Approval"
-  }
+  },
+  "errorWhileGettingOfferData": "An error occurred while retrieving offer data"
 }

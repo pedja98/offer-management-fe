@@ -1,0 +1,13 @@
+{
+  "name": "Ime",
+  "tin": "PIB",
+  "status": "Status",
+  "assignedTo": "Dodeljena osoba",
+  "temporaryAssignedTo": "Priv. dodeljena osoba",
+  "companyNotFound": "Kompanija nije pronađena",
+  "statuses": {
+    "active": "Aktivna",
+    "inactive": "Neaktivna",
+    "potential": "Potencijaln"
+  }
+}

@@ -1,23 +1,23 @@
-export interface OfferDto {
-  crmOfferId: number
-  name: string
-  omOfferId: string
-  companyId: number
-  companyName: string
-  opportunityId: number
-  opportunityName: string
-  contractId: number
-  contractName: string
-  status: OfferStatus
-  createdByUsername: string
-  modifiedByUsername: string
-  dateCreated: string
-  dateModified: string
-  mmc: number
-  contractObligation: number
-  approvalDescription: string
-  approvalLevel: OfferApprovalLevels
-  approvalStatus: OfferApprovalStatus
+export interface Offer {
+  crmOfferId?: number
+  name?: string
+  omOfferId?: string
+  companyId?: number
+  companyName?: string
+  opportunityId?: number
+  opportunityName?: string
+  contractId?: number
+  contractName?: string
+  status?: OfferStatus
+  createdByUsername?: string
+  modifiedByUsername?: string
+  dateCreated?: string
+  dateModified?: string
+  mmc?: number
+  contractObligation?: number
+  approvalDescription?: string
+  approvalLevel?: OfferApprovalLevels
+  approvalStatus?: OfferApprovalStatus
 }
 
 export enum OfferApprovalLevels {

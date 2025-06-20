@@ -1,0 +1,13 @@
+{
+  "name": "Name",
+  "tin": "TIN",
+  "status": "Status",
+  "assignedTo": "Assigned to",
+  "temporaryAssignedTo": "Temp. assigned to",
+  "companyNotFound": "Company not found",
+  "statuses": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "potential": "Potential"
+  }
+}

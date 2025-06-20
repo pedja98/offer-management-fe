@@ -4,5 +4,6 @@
     "offer": "Ponuda",
     "tariffAndBenefits": "Tarife i benefiti",
     "approval": "Odobrenje"
-  }
+  },
+  "errorWhileGettingOfferData": "Došlo je do greške pri dohvatanju podataka o ponudi"
 }

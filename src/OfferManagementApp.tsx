@@ -27,6 +27,7 @@ const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
     )
     changeLanguageManually(props.language || Language.SR)
   }, [])
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={omTheme}>
@@ -35,7 +36,7 @@ const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
           <Notification />
         </SnackbarProvider>
         <Confirm />
-        <MainPage />
+        <MainPage crmOfferId={props.crmOfferId} />
       </ThemeProvider>
     </Provider>
   )

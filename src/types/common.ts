@@ -13,3 +13,9 @@ export enum AccordionOptions {
   TariffAndBenefits = 'tariffAndBenefits',
   Approval = 'approval',
 }
+
+export interface ApiException {
+  status: number
+  message: string
+  error: string
+}

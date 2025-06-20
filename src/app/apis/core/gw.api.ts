@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { getCurrentUser } from '../../helpers/common'
-import { OmApiTags } from '../../consts/common'
+import { getCurrentUser } from '../../../helpers/common'
+import { OmApiTags } from '../../../consts/common'
 
-export const crmApi = createApi({
-  reducerPath: 'crmApi',
+export const gwApi = createApi({
+  reducerPath: 'gwApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.REACT_APP_CRM_API}`,
+    baseUrl: `${process.env.REACT_APP_GW_API}`,
     prepareHeaders: (headers) => {
       const currentUser = getCurrentUser()
       if (currentUser?.username && currentUser?.type) {
@@ -15,6 +15,6 @@ export const crmApi = createApi({
       return headers
     },
   }),
-  tagTypes: [OmApiTags.COMPANY, OmApiTags.OFFER],
+  tagTypes: [OmApiTags.OFFER],
   endpoints: () => ({}),
 })
