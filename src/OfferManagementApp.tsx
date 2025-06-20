@@ -1,5 +1,43 @@
-const OfferManagementApp = () => {
-  return <div className='App'>ll</div>
+import { useEffect } from 'react'
+import { useAppDispatch } from './app/hooks'
+import { OfferManagementProps } from './types/common'
+import { setAuthData } from './features/auth.slice'
+import { changeLanguageManually } from './utils/i18n'
+import { Language } from './types/auth'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
+import omTheme from './theme/omTheme'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
+import { SnackbarProvider } from 'notistack'
+import Notification from './components/Notification'
+import Confirm from './components/Confirm'
+
+const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(
+      setAuthData({
+        username: props.username,
+        type: props.type,
+        language: props.language || Language.SR,
+      }),
+    )
+    changeLanguageManually(props.language || Language.SR)
+  }, [])
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={omTheme}>
+        <CssBaseline />
+        <SnackbarProvider maxSnack={5} autoHideDuration={2000}>
+          <Notification />
+        </SnackbarProvider>
+        <Confirm />
+      </ThemeProvider>
+      <div>LLL</div>
+    </Provider>
+  )
 }
 
 export default OfferManagementApp
