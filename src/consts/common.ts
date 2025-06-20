@@ -1,3 +1,5 @@
+import { AccordionOptions } from '../types/common'
+
 export const PrimaryThemeColor = '#6e6e6e'
 
 export const SecondaryThemeColor = '#454444'
@@ -29,12 +31,18 @@ export const GridFieldTypes = {
   BUTTON: 'button',
 } as const
 
-export const PcApiTags = {
-  CHARACTERISTICS: 'Characteristics',
-  ADDONS: 'Addons',
-  TARIFF_PLANS: 'TariffPlans',
-  TARIFF_PLAN_CHARACTERISTICS: 'TariffPlanCharacteristics',
-  TARIFF_PLAN_DISCOUNTS: 'TariffPlanDiscounts',
-}
+export const AccordionItems = [
+  AccordionOptions.Company,
+  AccordionOptions.Offer,
+  AccordionOptions.TariffAndBenefits,
+  AccordionOptions.Approval,
+]
 
 export const TableRowPerPage = 10
+
+export const OmApiTags = {
+  ADDONS: 'Addons',
+  TARIFF_PLANS: 'TariffPlans',
+  COMPANY: 'Company',
+  OFFER: 'Offer',
+}

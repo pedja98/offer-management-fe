@@ -12,6 +12,7 @@ import { CssBaseline } from '@mui/material'
 import { SnackbarProvider } from 'notistack'
 import Notification from './components/Notification'
 import Confirm from './components/Confirm'
+import MainPage from './pages/MainPage'
 
 const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
   const dispatch = useAppDispatch()
@@ -34,8 +35,8 @@ const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
           <Notification />
         </SnackbarProvider>
         <Confirm />
+        <MainPage />
       </ThemeProvider>
-      <div>LLL</div>
     </Provider>
   )
 }

@@ -12,7 +12,7 @@ i18n
     fallbackLng: Language.SR.toLowerCase(),
     debug: false,
     backend: {
-      loadPath: `${process.env.REACT_APP_PC_FE}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: `${process.env.REACT_APP_OM_FE}/locales/{{lng}}/{{ns}}.json`,
     },
     ns: ['general'],
     defaultNS: 'general',

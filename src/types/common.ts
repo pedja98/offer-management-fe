@@ -6,3 +6,10 @@ export interface OfferManagementProps {
   username?: string
   type?: UserType
 }
+
+export enum AccordionOptions {
+  Company = 'company',
+  Offer = 'offer',
+  TariffAndBenefits = 'tariffAndBenefits',
+  Approval = 'approval',
+}

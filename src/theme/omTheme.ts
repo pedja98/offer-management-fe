@@ -76,18 +76,15 @@ export default createTheme({
   },
   components: {
     MuiButton: {
-      defaultProps: {
-        variant: 'contained',
-      },
       styleOverrides: {
         root: {
-          backgroundColor: TernaryColor,
-          color: WhiteTeamColor,
+          backgroundColor: WhiteTeamColor,
+          color: TernaryColor,
         },
-        contained: {
+        text: {
           boxShadow: 'none',
           fontWeight: 'bold',
-          fontSize: '18px',
+          fontSize: '16px',
         },
       },
     },
