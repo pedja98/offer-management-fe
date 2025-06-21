@@ -14,7 +14,7 @@ i18n
     backend: {
       loadPath: `${process.env.REACT_APP_OM_FE}/locales/{{lng}}/{{ns}}.json`,
     },
-    ns: ['general', 'company'],
+    ns: ['general', 'company', 'offer'],
     defaultNS: 'general',
     interpolation: {
       escapeValue: false,

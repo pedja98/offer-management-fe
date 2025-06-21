@@ -23,6 +23,7 @@ export const GridFieldTypes = {
   NUMBER: 'number',
   SELECT: 'select',
   LINK: 'link',
+  NON_EDITABLE: 'non_editable',
   PASSWORD: 'password',
   MULTISELECT: 'multiselect',
   AREA: 'area',

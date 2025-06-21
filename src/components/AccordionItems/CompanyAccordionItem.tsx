@@ -3,8 +3,8 @@ import { useGetCompanyQuery } from '../../app/apis/crm/company.api'
 import { useAppSelector } from '../../app/hooks'
 import Spinner from '../Spinner'
 import { useTranslation } from 'react-i18next'
-import { getCompanyGridDataLabels } from '../../transformers/company'
-import { Company } from '../../types/company'
+import { getCompanyGridData, getCompanyGridDataLabels } from '../../transformers/company'
+import { GridFieldTypes } from '../../consts/common'
 
 const CompanyAccordionItem = () => {
   const { t } = useTranslation()
@@ -24,17 +24,23 @@ const CompanyAccordionItem = () => {
   }
 
   const labels = getCompanyGridDataLabels(t)
+  const companyGridData = getCompanyGridData(t, company)
 
   return (
     <Grid container spacing={2}>
-      {labels.map((label) => (
-        <Grid item key={label.key} xs={12} sm={6} md={4}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <FormLabel style={{ fontSize: '0.5rem', whiteSpace: 'nowrap' }}>{label.text + ':'}</FormLabel>
-            <Typography>{company[label.key as keyof Company]}</Typography>
-          </div>
-        </Grid>
-      ))}
+      {labels.map((label) => {
+        const gridFieldData = companyGridData[label.key]
+        if (gridFieldData.type === GridFieldTypes.NON_EDITABLE) {
+          return (
+            <Grid item key={label.key} xs={12} sm={6} md={4}>
+              <FormLabel style={{ fontSize: '0.5rem', whiteSpace: 'nowrap' }}>{label.text}</FormLabel>
+              <Typography>{gridFieldData.value}</Typography>
+            </Grid>
+          )
+        } else {
+          return null
+        }
+      })}
     </Grid>
   )
 }

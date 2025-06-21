@@ -1,0 +1,23 @@
+{
+  "name": "ime",
+  "opportunity": "Poslovna prilika",
+  "status": "Status",
+  "mmc": "MMC",
+  "contractObligation": "Ugovorna obaveza",
+  "approvalDescription": "Opis",
+  "approvalLevel": "Nivo odobrenja",
+  "approvalStatus": "Status odobrenja",
+  "statuses": {
+    "draft": "Nacrt",
+    "what_if_analysis": "Šta-ako analiza",
+    "l1_pending": "L1 na čekanju",
+    "l2_pending": "L2 na čekanju",
+    "salesmen_closed": "Zatvoreno od strane prodavca",
+    "closed_by_system": "Zatvoreno od sistema",
+    "l1_rejected": "L1 odbijeno",
+    "l2_rejected": "L2 odbijeno",
+    "customer_pending": "Kupac na čekanju",
+    "customer_accepted": "Kupac prihvatio",
+    "concluded": "Zaključeno"
+  }
+}

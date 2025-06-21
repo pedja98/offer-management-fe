@@ -1,0 +1,23 @@
+{
+  "name": "Name",
+  "opportunity": "Opportunity",
+  "status": "Status",
+  "mmc": "MMC",
+  "contractObligation": "Contract obligation",
+  "approvalDescription": "Description",
+  "approvalLevel": "Approval level",
+  "approvalStatus": "Approval status",
+  "statuses": {
+    "draft": "Draft",
+    "what_if_analysis": "What-if Analysis",
+    "l1_pending": "L1 Pending",
+    "l2_pending": "L2 Pending",
+    "salesmen_closed": "Closed by Salesman",
+    "closed_by_system": "Closed by System",
+    "l1_rejected": "L1 Rejected",
+    "l2_rejected": "L2 Rejected",
+    "customer_pending": "Customer Pending",
+    "customer_accepted": "Customer Accepted",
+    "concluded": "Concluded"
+  }
+}

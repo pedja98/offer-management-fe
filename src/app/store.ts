@@ -6,6 +6,7 @@ import OfferReducer from '../features/offer.slice'
 import { gwApi } from './apis/core/gw.api'
 import { crmApi } from './apis/core/crm.api'
 import { pcApi } from './apis/core/pc.api'
+import { omApi } from './apis/core/om.api'
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   [gwApi.reducerPath]: gwApi.reducer,
   [crmApi.reducerPath]: crmApi.reducer,
   [pcApi.reducerPath]: pcApi.reducer,
+  [omApi.reducerPath]: omApi.reducer,
 })
 
 export const store = configureStore({
@@ -29,6 +31,7 @@ export const store = configureStore({
     })
       .concat(gwApi.middleware)
       .concat(crmApi.middleware)
+      .concat(omApi.middleware)
       .concat(pcApi.middleware),
 })
 
