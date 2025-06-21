@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Offer } from '../types/offer'
+import { Offer, OfferCalculateResponse } from '../types/offer'
 import { offerApi } from '../app/apis/om/offer.api'
+import { offerApi as gwOfferApi } from '../app/apis/gw/offer.api'
 
 const initialState: Offer = {}
 
@@ -17,6 +18,12 @@ const offerSlice = createSlice({
     builder.addMatcher(offerApi.endpoints.getOmOfferById.matchFulfilled, (state, action: PayloadAction<Offer>) => {
       return { ...state, ...action.payload }
     })
+    builder.addMatcher(
+      gwOfferApi.endpoints.calculate.matchFulfilled,
+      (state, action: PayloadAction<OfferCalculateResponse>) => {
+        return { ...state, approvalLevel: action.payload.approvalLevel }
+      },
+    )
   },
 })
 

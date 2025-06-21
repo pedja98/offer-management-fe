@@ -1,15 +1,23 @@
 import { OmApiTags } from '../../../consts/common'
-import { Offer } from '../../../types/offer'
+import { OfferCalculateResponse, OfferStatus } from '../../../types/offer'
 import { gwApi } from '../core/gw.api'
 
 export const offerApi = gwApi.injectEndpoints({
   endpoints: (builder) => ({
-    getGwOfferById: builder.query<Offer, number>({
-      query: (id) => `/offers/${id}`,
-      providesTags: (result, error, id) => [{ type: OmApiTags.OFFER, id }],
+    getAvailableOfferStatuses: builder.query<OfferStatus[], OfferStatus>({
+      query: (status) => `/offers/statuses/${status}`,
+      providesTags: (result, error, status) => [{ type: OmApiTags.OFFER, status }],
+    }),
+    calculate: builder.mutation<OfferCalculateResponse, { omOfferId: string }>({
+      query: ({ omOfferId }) => ({
+        url: `/offers/calculate/${omOfferId}`,
+        method: 'PATCH',
+        body: {},
+      }),
+      invalidatesTags: () => [{ type: OmApiTags.OFFER }],
     }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetGwOfferByIdQuery } = offerApi
+export const { useGetAvailableOfferStatusesQuery, useCalculateMutation } = offerApi

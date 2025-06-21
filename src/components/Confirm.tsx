@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material'
 import { useAppSelector } from '../app/hooks'
+import { ButtonStyled } from '../styles/common'
 
 const Confirm: FC = () => {
   const confirm = useAppSelector((state) => state.confirm)
@@ -24,12 +25,12 @@ const Confirm: FC = () => {
         <Typography>{confirm.confirmationText}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleConfirm} color='primary' variant='contained'>
+        <ButtonStyled onClick={handleConfirm} color='primary' variant='contained'>
           {confirm.confirmButtonLabel}
-        </Button>
-        <Button onClick={handleCancel} color='error' variant='contained'>
+        </ButtonStyled>
+        <ButtonStyled onClick={handleCancel} color='error' variant='contained'>
           {confirm.denyButtonLabel}
-        </Button>
+        </ButtonStyled>
       </DialogActions>
     </Dialog>
   )

@@ -1,7 +1,7 @@
 export interface Offer {
+  id?: string
   crmOfferId?: number
   name?: string
-  omOfferId?: string
   companyId?: number
   opportunityId?: number
   status?: OfferStatus
@@ -13,6 +13,11 @@ export interface Offer {
   contractObligation?: number
   approvalDescription?: string
   approvalLevel?: OfferApprovalLevels
+}
+
+export interface OfferCalculateResponse {
+  approvalLevel: OfferApprovalLevels
+  message: string
 }
 
 export enum OfferApprovalLevels {

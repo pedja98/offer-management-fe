@@ -8,7 +8,7 @@ import { AccordionOptions } from '../types/common'
 
 const AccordionItem = ({ accordionKey }: { accordionKey: string }) => {
   const { t } = useTranslation()
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   const handleToggle = () => {
     setExpanded(!expanded)

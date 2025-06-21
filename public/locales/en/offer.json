@@ -2,9 +2,16 @@
   "name": "Name",
   "status": "Status",
   "mmc": "MMC",
+  "calculate": "Calculate",
+  "calculateConfirmationMessage": "Are you sure that you want to perform the calculation?",
   "contractObligation": "Contract obligation",
   "approvalDescription": "Description",
   "approvalLevel": "Approval level",
+  "calculateSuccessful": "Calculation completed successfully",
+  "approvalLevels": {
+    "LEVEL_1": "Level 1",
+    "LEVEL_2": "Level 2"
+  },
   "statuses": {
     "draft": "Draft",
     "l1_pending": "L1 Pending",

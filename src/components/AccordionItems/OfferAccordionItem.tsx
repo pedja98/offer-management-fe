@@ -34,14 +34,14 @@ const OfferAccordionItem = () => {
     const value = offer[key as keyof Offer]
     try {
       await updateOmOfferAttribute({
-        id: String(offer.omOfferId),
+        id: String(offer.id),
         body: {
           [key]: value,
         },
       })
     } catch (err) {
       const errorResponse = err as { data: ApiException }
-      const errorCode = `contacts:${errorResponse.data}` || 'general:unknownError'
+      const errorCode = `offer:${errorResponse.data}` || 'general:unknownError'
       dispatch(
         setNotification({
           text: t(errorCode),

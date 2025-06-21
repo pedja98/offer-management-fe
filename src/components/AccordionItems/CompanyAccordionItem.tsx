@@ -1,26 +1,31 @@
 import { Grid, Typography, FormLabel } from '@mui/material'
 import { useGetCompanyQuery } from '../../app/apis/crm/company.api'
-import { useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import Spinner from '../Spinner'
 import { useTranslation } from 'react-i18next'
 import { getCompanyGridData, getCompanyGridDataLabels } from '../../transformers/company'
 import { GridFieldTypes } from '../../consts/common'
+import { setNotification } from '../../features/notifications.slice'
+import { NotificationType } from '../../types/notification'
 
 const CompanyAccordionItem = () => {
   const { t } = useTranslation()
   const companyId = useAppSelector((state) => state.offer).companyId as number
   const { isLoading, isError, data: company } = useGetCompanyQuery(companyId)
+  const dispatch = useAppDispatch()
 
   if (isLoading) {
     return <Spinner />
   }
 
   if (isError || !company) {
-    return (
-      <Grid>
-        <Typography variant='h5'>{t('company:errorRetrievingError')}</Typography>
-      </Grid>
+    dispatch(
+      setNotification({
+        text: t('retrievingDataError'),
+        type: NotificationType.Error,
+      }),
     )
+    return null
   }
 
   const labels = getCompanyGridDataLabels(t)

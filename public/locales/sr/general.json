@@ -5,5 +5,9 @@
     "tariffAndBenefits": "Tarife i benefiti",
     "approval": "Odobrenje"
   },
-  "errorWhileGettingOfferData": "Došlo je do greške pri dohvatanju podataka o ponudi"
+  "errorWhileGettingOfferData": "Došlo je do greške pri dohvatanju podataka o ponudi",
+  "retrievingDataError": "Došlo je do greške pri dohvatanju podataka o ponudi",
+  "dialogConfirmationButtonLabels": { "yes": "Da", "no": "Ne" },
+  "calculateNotPerform": "Kako bi ste promenili status neophodno je da izvr[ite kalkulaciju",
+  "notAllowedToChangeToStatus": "Nije vam dozvoljeno da promenite status"
 }
