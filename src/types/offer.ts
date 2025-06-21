@@ -12,15 +12,15 @@ export interface Offer {
   mmc?: number
   contractObligation?: number
   approvalDescription?: string
-  approvalLevel?: OfferApprovalLevels
+  approvalLevel?: OfferApprovalLevel
 }
 
 export interface OfferCalculateResponse {
-  approvalLevel: OfferApprovalLevels
+  approvalLevel: OfferApprovalLevel
   message: string
 }
 
-export enum OfferApprovalLevels {
+export enum OfferApprovalLevel {
   LEVEL_1 = 'LEVEL_1',
   LEVEL_2 = 'LEVEL_2',
 }
@@ -33,6 +33,7 @@ export enum OfferStatus {
   CLOSED_BY_SYSTEM = 'CLOSED_BY_SYSTEM',
   L1_REJECTED = 'L1_REJECTED',
   L2_REJECTED = 'L2_REJECTED',
+  OFFER_APPROVED = 'OFFER_APPROVED',
   CUSTOMER_ACCEPTED = 'CUSTOMER_ACCEPTED',
   CONCLUDED = 'CONCLUDED',
 }

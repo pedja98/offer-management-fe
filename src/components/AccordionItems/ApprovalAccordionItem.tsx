@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { useCalculateMutation, useGetAvailableOfferStatusesQuery } from '../../app/apis/gw/offer.api'
+import { useCalculateMutation, useChangeOfferStatusMutation } from '../../app/apis/gw/offer.api'
 import { Offer, OfferStatus } from '../../types/offer'
 import Spinner from '../Spinner'
 import { setNotification } from '../../features/notifications.slice'
@@ -9,31 +9,40 @@ import { FormLabel, Grid, TextField, Typography } from '@mui/material'
 import { EmptyValue } from '../../consts/common'
 import { useUpdateOmOfferAttributeMutation } from '../../app/apis/om/offer.api'
 import { setOfferData } from '../../features/offer.slice'
-import { ChangeEvent, FocusEvent } from 'react'
+import { ChangeEvent, FocusEvent, useState } from 'react'
 import { ApiException } from '../../types/common'
 import { ButtonStyled } from '../../styles/common'
 import { hideConfirm, showConfirm } from '../../features/confirm.slice'
+import { getAvailableStatusesForStatusChange } from '../../helpers/offer'
+import { Menu, MenuItem } from '@mui/material'
 
 const ApprovalAccordionItem = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [updateOmOfferAttribute] = useUpdateOmOfferAttributeMutation()
   const [calculate, { isLoading: isLoadingCalculate }] = useCalculateMutation()
+  const [changeOfferStatus, { isLoading: isLoadingChangeOfferStatus }] = useChangeOfferStatusMutation()
 
   const offer = useAppSelector((state) => state.offer)
+  const userType = useAppSelector((state) => state.auth).type
+
   const currentStatus = offer.status as OfferStatus
 
-  const {
-    isLoading: isLoadingGetAvailableStatuses,
-    isError: isErrorGetAvailableStatuses,
-    data: availableStatuses,
-  } = useGetAvailableOfferStatusesQuery(currentStatus)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleDropdownClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
 
   const handleCalculate = () => {
     dispatch(
       showConfirm({
         confirmationText: t('offer:calculateConfirmationMessage'),
-        confirmationTitle: t('offer:calculate'),
+        confirmationTitle: t('offer:calculate').toUpperCase(),
         onConfirm: handleConfirmCalculate,
         onCancel: handleConfirmClose,
         confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
@@ -94,19 +103,57 @@ const ApprovalAccordionItem = () => {
     }
   }
 
-  if (isLoadingGetAvailableStatuses || isLoadingCalculate) {
+  const handleStatusChange = (newStatus: OfferStatus) => {
+    dispatch(
+      showConfirm({
+        confirmationText: t('offer:changeStatusConfirmationMessage', {
+          newStatus: t(`offer:statuses.${newStatus.toLowerCase()}`),
+        }),
+        confirmationTitle: t('offer:changeStatus').toUpperCase(),
+        onConfirm: () => {
+          handleConfirmChangeStatus(newStatus)
+        },
+        onCancel: handleConfirmClose,
+        confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
+        denyButtonLabel: t('dialogConfirmationButtonLabels.no'),
+      }),
+    )
+  }
+
+  const handleConfirmChangeStatus = async (newStatus: OfferStatus) => {
+    try {
+      const result = await changeOfferStatus({
+        omOfferId: String(offer.id),
+        crmOfferId: Number(offer.crmOfferId),
+        oldStatus: currentStatus,
+        newStatus,
+        approvalLevel: offer.approvalLevel,
+      }).unwrap()
+
+      dispatch(setOfferData({ key: 'status', value: newStatus }))
+      dispatch(
+        setNotification({
+          text: t(`offer:${result.message}`),
+          type: NotificationType.Success,
+        }),
+      )
+    } catch (error) {
+      dispatch(
+        setNotification({
+          text: JSON.stringify(error),
+          type: NotificationType.Error,
+        }),
+      )
+    } finally {
+      dispatch(hideConfirm())
+    }
+  }
+
+  if (isLoadingCalculate || isLoadingChangeOfferStatus) {
     return <Spinner />
   }
 
-  if (isErrorGetAvailableStatuses || !availableStatuses) {
-    dispatch(
-      setNotification({
-        text: t('retrievingDataError'),
-        type: NotificationType.Error,
-      }),
-    )
-    return null
-  }
+  const availableStatuses = getAvailableStatusesForStatusChange(currentStatus, offer.approvalLevel, userType)
 
   return (
     <Grid>
@@ -130,10 +177,25 @@ const ApprovalAccordionItem = () => {
           />
         </Grid>
       </Grid>
-      <Grid sx={{ mt: 5 }}>
-        <ButtonStyled variant='contained' onClick={handleCalculate}>
-          {t('offer:calculate')}
-        </ButtonStyled>
+      <Grid container sx={{ mt: 5 }} direction='row' spacing={2}>
+        <Grid item>
+          <ButtonStyled variant='contained' onClick={handleCalculate}>
+            {t('offer:calculate')}
+          </ButtonStyled>
+        </Grid>
+        <Grid item>
+          <ButtonStyled variant='contained' onClick={handleDropdownClick} disabled={availableStatuses.length === 0}>
+            {t('offer:changeStatus')}
+          </ButtonStyled>
+
+          <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
+            {availableStatuses.map((status) => (
+              <MenuItem key={status} onClick={() => handleStatusChange(status)}>
+                {t(`offer:statuses.${status.toLowerCase()}`)}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Grid>
       </Grid>
     </Grid>
   )

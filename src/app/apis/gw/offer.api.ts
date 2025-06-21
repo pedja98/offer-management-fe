@@ -1,13 +1,9 @@
 import { OmApiTags } from '../../../consts/common'
-import { OfferCalculateResponse, OfferStatus } from '../../../types/offer'
+import { OfferApprovalLevel, OfferCalculateResponse, OfferStatus } from '../../../types/offer'
 import { gwApi } from '../core/gw.api'
 
 export const offerApi = gwApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAvailableOfferStatuses: builder.query<OfferStatus[], OfferStatus>({
-      query: (status) => `/offers/statuses/${status}`,
-      providesTags: (result, error, status) => [{ type: OmApiTags.OFFER, status }],
-    }),
     calculate: builder.mutation<OfferCalculateResponse, { omOfferId: string }>({
       query: ({ omOfferId }) => ({
         url: `/offers/calculate/${omOfferId}`,
@@ -16,8 +12,30 @@ export const offerApi = gwApi.injectEndpoints({
       }),
       invalidatesTags: () => [{ type: OmApiTags.OFFER }],
     }),
+    changeOfferStatus: builder.mutation<
+      { message: string },
+      {
+        omOfferId: string
+        crmOfferId: number
+        oldStatus: OfferStatus
+        newStatus: OfferStatus
+        approvalLevel?: OfferApprovalLevel | null
+      }
+    >({
+      query: ({ omOfferId, crmOfferId, oldStatus, newStatus, approvalLevel }) => ({
+        url: `/offers/statuses/${crmOfferId}`,
+        method: 'PATCH',
+        body: {
+          omOfferId,
+          oldStatus,
+          newStatus,
+          approvalLevel,
+        },
+      }),
+      invalidatesTags: () => [{ type: OmApiTags.OFFER }],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetAvailableOfferStatusesQuery, useCalculateMutation } = offerApi
+export const { useCalculateMutation, useChangeOfferStatusMutation } = offerApi
