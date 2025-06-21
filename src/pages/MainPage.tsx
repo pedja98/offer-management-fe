@@ -1,12 +1,12 @@
 import { AccordionItems } from '../consts/common'
 import AccordionItem from '../components/AccordionItem'
 import { Grid, Typography } from '@mui/material'
-import { useGetGwOfferByIdQuery } from '../app/apis/gw/offer.api'
 import Spinner from '../components/Spinner'
 import { useTranslation } from 'react-i18next'
+import { useGetOmOfferByIdQuery } from '../app/apis/om/offer.api'
 
 const MainPage: React.FC<{ crmOfferId: number }> = ({ crmOfferId }) => {
-  const { isLoading, isError } = useGetGwOfferByIdQuery(crmOfferId)
+  const { isLoading, isError } = useGetOmOfferByIdQuery(crmOfferId)
   const { t } = useTranslation()
 
   if (isLoading) {

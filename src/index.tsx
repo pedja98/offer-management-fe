@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <OfferManagementApp crmOfferId={41} language={Language.SR} username={'pmoe123'} type={UserType.ADMIN} />
+      <OfferManagementApp crmOfferId={48} language={Language.SR} username={'pmoe123'} type={UserType.ADMIN} />
     </Provider>
   </React.StrictMode>,
 )

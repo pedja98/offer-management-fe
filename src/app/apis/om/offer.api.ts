@@ -1,4 +1,5 @@
 import { OmApiTags } from '../../../consts/common'
+import { Offer } from '../../../types/offer'
 import { omApi } from '../core/om.api'
 
 export const offerApi = omApi.injectEndpoints({
@@ -19,8 +20,12 @@ export const offerApi = omApi.injectEndpoints({
       },
       invalidatesTags: (result, error, { id }) => [{ type: OmApiTags.OFFER, id }],
     }),
+    getOmOfferById: builder.query<Offer, number>({
+      query: (id) => `/offers/crm/${id}`,
+      providesTags: (result, error, id) => [{ type: OmApiTags.OFFER, id }],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useUpdateOmOfferAttributeMutation } = offerApi
+export const { useUpdateOmOfferAttributeMutation, useGetOmOfferByIdQuery } = offerApi

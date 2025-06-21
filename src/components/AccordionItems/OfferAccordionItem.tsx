@@ -64,15 +64,13 @@ const OfferAccordionItem = () => {
           )
         } else if (gridFieldData.type === GridFieldTypes.NUMBER) {
           return (
-            <Grid item key={label.key}>
+            <Grid item key={label.key} xs={12} sm={6} md={4}>
               <TextField
                 id={label.key}
                 name={label.key}
                 label={label.text}
                 type='number'
-                disabled={gridFieldData.disabled}
                 variant='standard'
-                required={!!gridFieldData.required}
                 value={gridFieldData.value}
                 onChange={handleChange}
                 onBlur={handleBlur}

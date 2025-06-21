@@ -18,7 +18,7 @@ const CompanyAccordionItem = () => {
   if (isError || !company) {
     return (
       <Grid>
-        <Typography variant='h3'>{t('company:errorRetrievingError')}</Typography>
+        <Typography variant='h5'>{t('company:errorRetrievingError')}</Typography>
       </Grid>
     )
   }

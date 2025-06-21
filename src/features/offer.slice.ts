@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Offer } from '../types/offer'
-import { offerApi } from '../app/apis/gw/offer.api'
+import { offerApi } from '../app/apis/om/offer.api'
 
 const initialState: Offer = {}
 
@@ -14,7 +14,7 @@ const offerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(offerApi.endpoints.getGwOfferById.matchFulfilled, (state, action: PayloadAction<Offer>) => {
+    builder.addMatcher(offerApi.endpoints.getOmOfferById.matchFulfilled, (state, action: PayloadAction<Offer>) => {
       return { ...state, ...action.payload }
     })
   },
