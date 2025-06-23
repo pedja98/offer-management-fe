@@ -1,6 +1,12 @@
 {
   "plannedTpName": "Planirano ime tarifnog plana",
-  "plannedTpPrice": "Planirana cena tarifnog plana",
+  "plannedTpPrice": "Planirana cena tarifnog plana (RSD)",
   "actualTpName": "Stvarno ime tarifnog plana",
-  "actualTpPrice": "Stvarna cena tarifnog plana"
+  "actualTpPrice": "Stvarna cena tarifnog plana (RSD)",
+  "plannedTariffPlans": "Planirani tarifni planovi",
+  "actualTariffPlans": "Stvarni tarifni planovi",
+  "allTariffPlans": "Svi tarifni planovi",
+  "search": "Pretraži",
+  "deactivate": "Deaktiviraj",
+  "errorRetrievingError": "Došlo je do greške pri dohvatanju podataka o tarifnim planovima"
 }

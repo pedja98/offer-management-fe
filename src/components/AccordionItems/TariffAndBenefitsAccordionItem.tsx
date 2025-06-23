@@ -1,43 +1,31 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TablePagination,
-  Checkbox,
-  Box,
-  Typography,
-} from '@mui/material'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { Box, Typography } from '@mui/material'
+import { useAppSelector } from '../../app/hooks'
 import { useGetOfferTariffPlansByOfferIdQuery } from '../../app/apis/om/tariff-plans.api'
 import Spinner from '../Spinner'
+import CustomTable from '../CustomTable'
+import CustomTableActions from '../CustomTableActions'
 import { getTariffPlansTableColumnsLabels } from '../../transformers/tariffPlans'
-import { OmTariffPlanDto } from '../../types/tariffPlans'
-import { EmptyValue } from '../../consts/common'
-
-export const TableRowPerPage = 10
 
 const TariffAndBenefitsAccordionItem = () => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
   const omOfferId = useAppSelector((state) => state.offer).id
   const language = useAppSelector((state) => state.auth).language
 
   const { data: tariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
 
-  // State for checkboxes and pagination
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [page, setPage] = useState(0)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
+  const [selectedFilter, setSelectedFilter] = useState<string>('all')
 
-  // Checkbox handlers
+  const columns = getTariffPlansTableColumnsLabels(t)
+
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const allIds = new Set(tariffPlans?.map((plan) => plan.id) || [])
+      const allIds = new Set(filteredTariffPlans?.map((plan) => plan.id) || [])
       setSelectedIds(allIds)
     } else {
       setSelectedIds(new Set())
@@ -58,113 +46,103 @@ const TariffAndBenefitsAccordionItem = () => {
     setPage(newPage)
   }
 
-  const getFieldValue = (tariffPlan: OmTariffPlanDto, key: string): string => {
-    switch (key) {
-      case 'plannedTpName':
-        return tariffPlan.plannedTpName[language] || tariffPlan.plannedTpName['en'] || EmptyValue
-      case 'plannedTpPrice':
-        return tariffPlan.plannedTpPrice?.toLocaleString() || EmptyValue
-      case 'actualTpName':
-        return tariffPlan.actualTpName[language] || tariffPlan.actualTpName['en'] || EmptyValue
-      case 'actualTpPrice':
-        return tariffPlan.actualTpPrice?.toLocaleString() || EmptyValue
-      default:
-        return EmptyValue
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+    setPage(0)
+  }
+
+  const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => {
+    setFilterAnchorEl(event.currentTarget)
+  }
+
+  const handleFilterClose = () => {
+    setFilterAnchorEl(null)
+  }
+
+  const handleFilterSelect = (filter: string) => {
+    setSelectedFilter(filter)
+    setFilterAnchorEl(null)
+    setPage(0)
+  }
+
+  const handleClearSearch = () => {
+    setSearchTerm('')
+    setPage(0)
+  }
+
+  const handleAdd = () => {
+    console.log('Add new tariff plan')
+  }
+
+  const handleChange = () => {
+    if (selectedIds.size > 0) {
+      setSelectedIds(new Set())
     }
   }
+
+  const handleDelete = () => {
+    if (selectedIds.size > 0) {
+      setSelectedIds(new Set())
+    }
+  }
+
+  const filteredTariffPlans = tariffPlans?.filter((plan) => {
+    const matchesSearch =
+      searchTerm === '' ||
+      Object.values(plan).some(
+        (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()),
+      ) ||
+      (plan.plannedTpName[language] || plan.plannedTpName['en'] || '')
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (plan.actualTpName[language] || plan.actualTpName['en'] || '').toLowerCase().includes(searchTerm.toLowerCase())
+
+    const matchesFilter =
+      selectedFilter === 'all' ||
+      (selectedFilter === 'planned' && plan.plannedTpPrice !== null) ||
+      (selectedFilter === 'actual' && plan.actualTpPrice !== null)
+
+    return matchesSearch && matchesFilter
+  })
 
   if (isLoadingGetOfferTP) {
     return <Spinner />
   }
 
-  if (!tariffPlans || tariffPlans.length === 0) {
+  if (!tariffPlans) {
     return (
       <Box display='flex' justifyContent='center' py={4}>
         <Typography variant='body2' color='text.secondary'>
-          {t('noTariffPlansFound')}
+          {t('tariffPlan:errorRetrievingError')}
         </Typography>
       </Box>
     )
   }
 
-  const columns = getTariffPlansTableColumnsLabels(t)
-  const paginatedRows = tariffPlans.slice(page * TableRowPerPage, (page + 1) * TableRowPerPage)
-  const isAllSelected = paginatedRows.length > 0 && paginatedRows.every((plan) => selectedIds.has(plan.id))
-  const isIndeterminate = paginatedRows.some((plan) => selectedIds.has(plan.id)) && !isAllSelected
-
   return (
     <Box sx={{ width: '100%' }}>
-      <TableContainer component={Paper} sx={{ mt: 1, mb: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding='checkbox'>
-                <Checkbox
-                  checked={isAllSelected}
-                  indeterminate={isIndeterminate}
-                  onChange={(e) => handleSelectAll(e.target.checked)}
-                  color='primary'
-                  sx={{
-                    '&:not(.Mui-checked) .MuiSvgIcon-root': {
-                      backgroundColor: 'white',
-                      borderRadius: '2px',
-                    },
-                  }}
-                />
-              </TableCell>
-              {columns.map((col) => (
-                <TableCell key={col.key}>
-                  <Typography variant='subtitle1' fontWeight='medium' sx={{ fontWeight: 'bold' }}>
-                    {col.text}
-                  </Typography>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedRows.map((tariffPlan) => (
-              <TableRow key={tariffPlan.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell padding='checkbox'>
-                  <Checkbox
-                    checked={selectedIds.has(tariffPlan.id)}
-                    onChange={(e) => handleSelectItem(tariffPlan.id, e.target.checked)}
-                    color='primary'
-                    sx={{
-                      '&:not(.Mui-checked) .MuiSvgIcon-root': {
-                        backgroundColor: 'white',
-                        borderRadius: '2px',
-                      },
-                    }}
-                  />
-                </TableCell>
-                {columns.map((col) => (
-                  <TableCell key={col.key}>
-                    <Typography variant='body2'>{getFieldValue(tariffPlan, col.key)}</Typography>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          component='div'
-          count={tariffPlans.length}
-          rowsPerPage={TableRowPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[]}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to} ${t('of')} ${count !== -1 ? count : `${t('moreThan')} ${to}`}`
-          }
-        />
-      </TableContainer>
-      {selectedIds.size > 0 && (
-        <Box sx={{ mt: 2, p: 2, bgcolor: 'primary.light', borderRadius: 1 }}>
-          <Typography variant='body2' color='primary.contrastText'>
-            {selectedIds.size} {t('itemsSelected')}
-          </Typography>
-        </Box>
-      )}
+      <CustomTableActions
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        onClearSearch={handleClearSearch}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+        onChange={handleChange}
+        selectedCount={selectedIds.size}
+        filterAnchorEl={filterAnchorEl}
+        onFilterClick={handleFilterClick}
+        onFilterClose={handleFilterClose}
+        onFilterSelect={handleFilterSelect}
+      />
+      <CustomTable
+        data={filteredTariffPlans || []}
+        page={page}
+        columns={columns}
+        onPageChange={handleChangePage}
+        selectedIds={selectedIds}
+        onSelectAll={handleSelectAll}
+        onSelectItem={handleSelectItem}
+      />
     </Box>
   )
 }

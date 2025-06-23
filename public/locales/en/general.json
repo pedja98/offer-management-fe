@@ -9,5 +9,6 @@
   "retrievingDataError": "An error occurred while retrieving offer data",
   "dialogConfirmationButtonLabels": { "yes": "Yes", "no": "No" },
   "calculateNotPerform": "In order to change the status, you need to perform a calculation",
-  "notAllowedToChangeToStatus": "You are not permitted to change the status"
+  "notAllowedToChangeToStatus": "You are not permitted to change the status",
+  "search": "Search"
 }
