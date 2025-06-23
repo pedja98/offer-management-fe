@@ -7,6 +7,7 @@ import { gwApi } from './apis/core/gw.api'
 import { crmApi } from './apis/core/crm.api'
 import { pcApi } from './apis/core/pc.api'
 import { omApi } from './apis/core/om.api'
+import { offerTariffPlanApi } from './apis/om/tariff-plans.api'
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   [crmApi.reducerPath]: crmApi.reducer,
   [pcApi.reducerPath]: pcApi.reducer,
   [omApi.reducerPath]: omApi.reducer,
+  [offerTariffPlanApi.reducerPath]: offerTariffPlanApi.reducer,
 })
 
 export const store = configureStore({
@@ -31,6 +33,7 @@ export const store = configureStore({
     })
       .concat(gwApi.middleware)
       .concat(crmApi.middleware)
+      .concat(offerTariffPlanApi.middleware)
       .concat(omApi.middleware)
       .concat(pcApi.middleware),
 })

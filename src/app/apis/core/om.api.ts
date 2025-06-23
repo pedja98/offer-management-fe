@@ -15,6 +15,6 @@ export const omApi = createApi({
       return headers
     },
   }),
-  tagTypes: [OmApiTags.OFFER],
+  tagTypes: [OmApiTags.OFFER, OmApiTags.TARIFF_PLANS],
   endpoints: () => ({}),
 })
