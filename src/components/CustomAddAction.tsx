@@ -1,10 +1,6 @@
 import { Grid } from '@mui/material'
-import { CustomTableModule } from '../types/common'
+import { CustomAddActionProps } from '../types/common'
 import { getAddActionContext } from '../helpers/common'
-
-export interface CustomAddActionProps {
-  module: CustomTableModule
-}
 
 const CustomAddAction = ({ module }: CustomAddActionProps) => {
   const addActionContext = getAddActionContext(module)

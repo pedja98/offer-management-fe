@@ -18,5 +18,6 @@
   "tariffPlansDeleted": "Uspešno ste obrisali selektovane tarifne planove",
   "tariffPlan": "Tarifni plan",
   "quantity": "Količina",
-  "addTariffPlans": "Uspešno ste dodali nove tarifne planove na ponudu"
+  "addTariffPlans": "Uspešno ste dodali nove tarifne planove na ponudu",
+  "tariffPlansUpdated": "Uspešno ste izmenili tarifne plan/ove"
 }

@@ -8,6 +8,7 @@ import OfferAccordionItem from '../components/AccordionItems/OfferAccordionItem'
 import TariffAndBenefitsAccordionItem from '../components/AccordionItems/TariffAndBenefitsAccordionItem'
 import AddonAddActionItem from '../components/AddActionItems/AddonAddActionItem'
 import TariffPlanAddActionItem from '../components/AddActionItems/TariffPlanAddActionItem'
+import TariffPlanChangeAction from '../components/ChangeActionItems/TariffPlanChangeAction'
 
 export const getCurrentUser = (): AuthState | undefined => {
   const cookie = Cookies.get('currentUser')
@@ -39,6 +40,14 @@ export const getAddActionContext = (module: CustomTableModule): ReactNode | unde
   const items: Partial<Record<CustomTableModule, ReactNode>> = {
     [CustomTableModule.Addon]: <AddonAddActionItem />,
     [CustomTableModule.TariffPlan]: <TariffPlanAddActionItem />,
+  }
+
+  return items[module]
+}
+
+export const getChangeActionContext = (module: CustomTableModule, selectedIds: Set<string>): ReactNode | undefined => {
+  const items: Partial<Record<CustomTableModule, ReactNode>> = {
+    [CustomTableModule.TariffPlan]: <TariffPlanChangeAction selectedIds={selectedIds} />,
   }
 
   return items[module]

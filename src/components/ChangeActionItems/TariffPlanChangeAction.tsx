@@ -4,24 +4,22 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import Spinner from '../Spinner'
 import { ApiException, ItemName } from '../../types/common'
 import { SyntheticEvent, useMemo, useState } from 'react'
-import { CreateTariffPlan, PcTariffPlan, SaveTariffPlanItem } from '../../types/tariffPlans'
+import { PcTariffPlan, UpdateTariffPlans } from '../../types/tariffPlans'
 import { useTranslation } from 'react-i18next'
 import { ButtonStyled } from '../../styles/common'
-import { useCreateTariffPlansBulkMutation } from '../../app/apis/om/offer-tariff-plans.api'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
+import { useUpdateTariffPlansBulkMutation } from '../../app/apis/om/offer-tariff-plans.api'
 
-const TariffPlanAddActionItem = () => {
+const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) => {
   const [selectedTariffPlan, setSelectedTariffPlan] = useState<PcTariffPlan | null>(null)
-  const [quantity, setQuantity] = useState<number>(1)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const language = useAppSelector((state) => state.auth).language
-  const omOfferId = useAppSelector((state) => state.offer).id
 
   const { data: pcTariffPlans, isLoading: isLoadingGetPcTariffPlans } = useGetActiveTariffPlansQuery()
-  const [createTariffPlansBulk, { isLoading: isLoadingCreateTariffPlansBulk }] = useCreateTariffPlansBulkMutation()
+  const [updateTariffPlansBulk, { isLoading: isLoadingUpdateTariffPlansBulk }] = useUpdateTariffPlansBulkMutation()
 
   const tariffPlanMap = useMemo(() => {
     if (!pcTariffPlans) return {}
@@ -44,29 +42,16 @@ const TariffPlanAddActionItem = () => {
     }
   }
 
-  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value)
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value)
-    } else if (event.target.value === '') {
-      setQuantity(1)
-    }
-  }
-
-  const handleAdd = async () => {
+  const handleChange = async () => {
     try {
-      const tariffPlan = {
-        identifier: String(selectedTariffPlan?.identifier),
-        name: selectedTariffPlan?.name as ItemName,
-        price: Number(selectedTariffPlan?.price),
-      } as SaveTariffPlanItem
+      const updateTariffPlan = {
+        uuids: Array.from(selectedIds),
+        newTpIdentifier: selectedTariffPlan?.identifier,
+        newTpPrice: selectedTariffPlan?.price,
+        newTpName: selectedTariffPlan?.name,
+      } as UpdateTariffPlans
 
-      const createTariffPlan = {
-        numberOfItems: quantity,
-        omOfferId,
-        tariffPlan,
-      } as CreateTariffPlan
-      const result = await createTariffPlansBulk(createTariffPlan)
+      const result = await updateTariffPlansBulk(updateTariffPlan)
       dispatch(
         setNotification({
           text: t(`tariffPlan:${result.data?.message}`),
@@ -90,21 +75,9 @@ const TariffPlanAddActionItem = () => {
   }
 
   return (
-    <Box sx={{ width: '100%', minWidth: 500, height: '90px', pl: 1, pr: 1, pt: 2 }}>
+    <Box sx={{ width: '100%', minWidth: 400, height: '90px', pl: 1, pr: 1, pt: 2 }}>
       <Grid container spacing={2} alignItems='flex-end'>
-        <Grid item xs={3}>
-          <TextField
-            label={t('tariffPlan:quantity')}
-            type='number'
-            value={quantity}
-            onChange={handleQuantityChange}
-            variant='standard'
-            fullWidth
-            inputProps={{ min: 1 }}
-            required
-          />
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <Autocomplete
             id='tariff-plan-autocomplete'
             options={options}
@@ -122,12 +95,12 @@ const TariffPlanAddActionItem = () => {
         <Grid item xs={3}>
           <ButtonStyled
             variant='contained'
-            onClick={handleAdd}
-            disabled={!selectedTariffPlan || quantity < 1 || isLoadingCreateTariffPlansBulk}
+            onClick={handleChange}
+            disabled={!selectedTariffPlan || isLoadingUpdateTariffPlansBulk}
             fullWidth
             sx={{ height: '40px' }}
           >
-            {t('add')}
+            {t('change')}
           </ButtonStyled>
         </Grid>
       </Grid>
@@ -135,4 +108,4 @@ const TariffPlanAddActionItem = () => {
   )
 }
 
-export default TariffPlanAddActionItem
+export default TariffPlanChangeAction

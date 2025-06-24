@@ -11,5 +11,6 @@
   "calculateNotPerform": "Kako bi ste promenili status neophodno je da izvr[ite kalkulaciju",
   "notAllowedToChangeToStatus": "Nije vam dozvoljeno da promenite status",
   "search": "Pretraži",
-  "add": "Dodaj"
+  "add": "Dodaj",
+  "change": "Izmeni"
 }

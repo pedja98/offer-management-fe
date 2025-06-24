@@ -35,7 +35,7 @@ export const offerTariffPlanApi = createApi({
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    updateTariffPlansBulk: builder.mutation<string, UpdateTariffPlans>({
+    updateTariffPlansBulk: builder.mutation<{ message: string }, UpdateTariffPlans>({
       query: (body) => ({
         url: `/bulk`,
         method: 'PUT',

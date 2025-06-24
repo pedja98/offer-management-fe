@@ -17,5 +17,6 @@
   "tariffPlansDeleted": "You have successfully delete selected tariff plans",
   "tariffPlan": "Tariff plan",
   "quantity": "Quantity",
-  "addTariffPlans": "You have successfully added new tariff plans to your offer"
+  "addTariffPlans": "You have successfully added new tariff plans to your offer",
+  "tariffPlansUpdated": "You have successfully changed tariff plan/s"
 }

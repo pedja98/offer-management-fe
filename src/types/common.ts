@@ -61,7 +61,7 @@ export interface CustomTableActionsProps {
   onSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void
   onDelete: () => void
-  onChange: () => void
+  selectedIds: Set<string>
   selectedCount: number
   filterAnchorEl: null | HTMLElement
   onFilterClick: (e: MouseEvent<HTMLElement>) => void
@@ -78,4 +78,13 @@ export enum CustomTableModule {
 export interface ItemName {
   sr: string
   en: string
+}
+
+export interface CustomAddActionProps {
+  module: CustomTableModule
+}
+
+export interface CustomChangeActionProps {
+  module: CustomTableModule
+  selectedIds: Set<string>
 }

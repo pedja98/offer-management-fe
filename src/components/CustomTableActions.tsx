@@ -1,4 +1,4 @@
-import { Box, IconButton, InputAdornment, Menu, MenuItem, TextField, Toolbar } from '@mui/material'
+import { Box, Grid, IconButton, InputAdornment, Menu, MenuItem, TextField, Toolbar } from '@mui/material'
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -13,31 +13,45 @@ import { useAppSelector } from '../app/hooks'
 import { CustomTableActionsProps } from '../types/common'
 import { useState, useRef, useCallback } from 'react'
 import CustomAddAction from './CustomAddAction'
+import CustomChangeAction from './CustomChangeAction'
 
 const CustomTableActions = ({
   searchTerm,
   onSearchChange,
   onClearSearch,
   onDelete,
-  onChange,
   selectedCount,
   filterAnchorEl,
   onFilterClick,
   onFilterClose,
   onFilterSelect,
+  selectedIds,
   module,
 }: CustomTableActionsProps) => {
   const { t } = useTranslation()
   const offerStatus = useAppSelector((state) => state.offer).status
-  const addButtonRef = useRef<HTMLButtonElement>(null)
-  const [open, setOpen] = useState(false)
 
-  const handleClick = useCallback(() => {
-    setOpen((prev) => !prev)
+  const addButtonRef = useRef<HTMLButtonElement>(null)
+  const changeButtonRef = useRef<HTMLButtonElement>(null)
+  const [addMenuOpen, setAddMenuOpen] = useState(false)
+  const [changeMenuOpen, setChangeMenuOpen] = useState(false)
+
+  const handleAddClick = useCallback(() => {
+    setChangeMenuOpen(false)
+    setAddMenuOpen((prev) => !prev)
   }, [])
 
-  const handleClose = useCallback(() => {
-    setOpen(false)
+  const handleAddClose = useCallback(() => {
+    setAddMenuOpen(false)
+  }, [])
+
+  const handleChangeClick = useCallback(() => {
+    setAddMenuOpen(false)
+    setChangeMenuOpen((prev) => !prev)
+  }, [])
+
+  const handleChangeClose = useCallback(() => {
+    setChangeMenuOpen(false)
   }, [])
 
   return (
@@ -75,42 +89,36 @@ const CustomTableActions = ({
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <IconButton
-          ref={addButtonRef}
-          onClick={handleClick}
-          color='primary'
-          disabled={offerStatus !== OfferStatus.DRAFT}
-        >
-          <AddIcon />
-        </IconButton>
+        <Grid>
+          <IconButton
+            ref={addButtonRef}
+            onClick={handleAddClick}
+            color='primary'
+            disabled={offerStatus !== OfferStatus.DRAFT}
+          >
+            <AddIcon />
+          </IconButton>
 
-        <Menu
-          anchorEl={addButtonRef.current}
-          open={open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          disableAutoFocusItem
-          MenuListProps={{
-            sx: { p: 0 },
-          }}
-          PaperProps={{
-            sx: {
-              boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
-              border: '1px solid rgba(0, 0, 0, 0.12)',
-              borderRadius: 1,
-              mt: 0.5,
-            },
-          }}
-        >
-          <CustomAddAction module={module} />
-        </Menu>
+          <Menu
+            anchorEl={addButtonRef.current}
+            open={addMenuOpen}
+            onClose={handleAddClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            disableAutoFocusItem
+            MenuListProps={{
+              sx: { p: 0 },
+            }}
+          >
+            <CustomAddAction module={module} />
+          </Menu>
+        </Grid>
 
         <IconButton
           onClick={onDelete}
@@ -120,13 +128,35 @@ const CustomTableActions = ({
           <DeleteIcon />
         </IconButton>
 
-        <IconButton
-          onClick={onChange}
-          color='primary'
-          disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
-        >
-          <SwapVerticalCircleOutlined />
-        </IconButton>
+        <Grid>
+          <IconButton
+            ref={changeButtonRef}
+            onClick={handleChangeClick}
+            color='primary'
+            disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
+          >
+            <SwapVerticalCircleOutlined />
+          </IconButton>
+          <Menu
+            anchorEl={changeButtonRef.current}
+            open={changeMenuOpen}
+            onClose={handleChangeClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            disableAutoFocusItem
+            MenuListProps={{
+              sx: { p: 0 },
+            }}
+          >
+            <CustomChangeAction module={module} selectedIds={selectedIds} />
+          </Menu>
+        </Grid>
       </Box>
     </Toolbar>
   )

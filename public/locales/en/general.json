@@ -11,5 +11,6 @@
   "calculateNotPerform": "In order to change the status, you need to perform a calculation",
   "notAllowedToChangeToStatus": "You are not permitted to change the status",
   "search": "Search",
-  "add": "Add"
+  "add": "Add",
+  "change": "Change"
 }
