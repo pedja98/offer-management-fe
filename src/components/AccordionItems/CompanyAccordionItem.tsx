@@ -21,7 +21,7 @@ const CompanyAccordionItem = () => {
   if (isError || !company) {
     dispatch(
       setNotification({
-        text: t('retrievingDataError'),
+        text: t('company:retrievingDataError'),
         type: NotificationType.Error,
       }),
     )

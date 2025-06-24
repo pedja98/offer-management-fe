@@ -1,7 +1,6 @@
 import { ChangeEvent, MouseEvent } from 'react'
 import { GridFieldTypes } from '../consts/common'
 import { Language, UserType } from './auth'
-import { OmTariffPlanDto } from './tariffPlans'
 
 export interface OfferManagementProps {
   crmOfferId: number
@@ -25,30 +24,35 @@ export interface ApiException {
 
 export type GridFieldType = (typeof GridFieldTypes)[keyof typeof GridFieldTypes]
 
-export type AutocompleteEntity = {
-  [key: string]: unknown
-}
-
 export interface GridLabel {
   text: string
   key: string
 }
 
+export interface TableRowData {
+  [key: string]: {
+    value: string | number | null | undefined | null | boolean
+    type: GridFieldType
+    disabled?: boolean
+  }
+}
+
 export interface PageElement {
   [key: string]: {
-    value: string | number | null | undefined
+    value: string | number | null | undefined | null
     type: GridFieldType
   }
 }
 
 export interface CustomTableProps {
-  data: OmTariffPlanDto[]
+  data: TableRowData[]
   page: number
   onPageChange: (event: unknown, newPage: number) => void
   selectedIds: Set<string>
   columns: GridLabel[]
   onSelectAll: (checked: boolean) => void
   onSelectItem: (id: string, checked: boolean) => void
+  rowIds: (string | number)[]
 }
 
 export interface CustomTableActionsProps {

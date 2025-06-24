@@ -6,11 +6,16 @@ import { useGetOfferTariffPlansByOfferIdQuery } from '../../app/apis/om/tariff-p
 import Spinner from '../Spinner'
 import CustomTable from '../CustomTable'
 import CustomTableActions from '../CustomTableActions'
-import { getTariffPlansTableColumnsLabels } from '../../transformers/tariffPlans'
+import { getTariffPlansTableColumnsLabels, transformTariffPlansIntoTableData } from '../../transformers/tariffPlans'
+import { OfferStatus } from '../../types/offer'
+import { OpportunityType } from '../../types/opportunity'
 
 const TariffAndBenefitsAccordionItem = () => {
   const { t } = useTranslation()
+
   const omOfferId = useAppSelector((state) => state.offer).id
+  const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
+  const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
   const { data: tariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
@@ -25,7 +30,7 @@ const TariffAndBenefitsAccordionItem = () => {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const allIds = new Set(filteredTariffPlans?.map((plan) => plan.id) || [])
+      const allIds = new Set(filteredTp?.map((plan) => plan.id) || [])
       setSelectedIds(allIds)
     } else {
       setSelectedIds(new Set())
@@ -86,7 +91,7 @@ const TariffAndBenefitsAccordionItem = () => {
     }
   }
 
-  const filteredTariffPlans = tariffPlans?.filter((plan) => {
+  const filteredTp = tariffPlans?.filter((plan) => {
     const matchesSearch =
       searchTerm === '' ||
       Object.values(plan).some(
@@ -99,11 +104,17 @@ const TariffAndBenefitsAccordionItem = () => {
 
     const matchesFilter =
       selectedFilter === 'all' ||
-      (selectedFilter === 'planned' && plan.plannedTpPrice !== null) ||
-      (selectedFilter === 'actual' && plan.actualTpPrice !== null)
+      (selectedFilter === 'planned' && !plan.plannedTpPrice) ||
+      (selectedFilter === 'actual' && !plan.actualTpPrice)
 
     return matchesSearch && matchesFilter
   })
+
+  const disabledDeactivation = offerStatus !== OfferStatus.DRAFT || opportunityType === OpportunityType.ACQUISITION
+
+  const filteredTpIds = filteredTp?.map((tariffPlan) => tariffPlan.id) || []
+  const filteredTpRows =
+    filteredTp?.map((tp) => transformTariffPlansIntoTableData(tp, language, disabledDeactivation)) || []
 
   if (isLoadingGetOfferTP) {
     return <Spinner />
@@ -135,7 +146,8 @@ const TariffAndBenefitsAccordionItem = () => {
         onFilterSelect={handleFilterSelect}
       />
       <CustomTable
-        data={filteredTariffPlans || []}
+        data={filteredTpRows}
+        rowIds={filteredTpIds}
         page={page}
         columns={columns}
         onPageChange={handleChangePage}

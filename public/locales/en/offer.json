@@ -1,6 +1,6 @@
 {
-  "name": "Name",
-  "status": "Status",
+  "name": "Offer name",
+  "status": "Offer status",
   "mmc": "MMC",
   "calculate": "Calculate",
   "calculateConfirmationMessage": "Are you sure that you want to perform the calculation?",

@@ -22,13 +22,9 @@ export const GridFieldTypes = {
   STRING: 'string',
   NUMBER: 'number',
   SELECT: 'select',
-  LINK: 'link',
   NON_EDITABLE: 'non_editable',
-  PASSWORD: 'password',
-  MULTISELECT: 'multiselect',
+  CHECKBOX: 'checkbox',
   AREA: 'area',
-  AUTOCOMPLETE: 'autocomplete',
-  BUTTON: 'button',
 } as const
 
 export const AccordionItems = [
@@ -42,6 +38,7 @@ export const TableRowPerPage = 10
 
 export const OmApiTags = {
   ADDONS: 'Addons',
+  OPPORTUNITY: 'Opportunity',
   TARIFF_PLANS: 'TariffPlans',
   COMPANY: 'Company',
   OFFER: 'Offer',

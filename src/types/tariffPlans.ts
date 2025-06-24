@@ -1,32 +1,33 @@
-export interface UpdateTariffPlansDto {
+export interface UpdateTariffPlans {
   newTpIdentifier: string
   newTpName: Record<string, string>
   newTpPrice: number
   uuids: string[]
 }
 
-export interface OmTariffPlanDto {
+export interface OmTariffPlan {
   id: string
   plannedTpName: Record<string, string>
   plannedTpIdentifier: string
-  plannedTpPrice: number
+  plannedTpPrice: number | null
   actualTpName: Record<string, string>
   actualTpIdentifier: string
-  actualTpPrice: number
+  actualTpPrice: number | null
+  deactivate: boolean
 }
 
-export interface CreateTariffPlansBulkResponseDto {
+export interface CreateTariffPlansBulkResponse {
   message: string
-  tariffPlans: OmTariffPlanDto[]
+  tariffPlans: OmTariffPlan[]
 }
 
-export interface CreateTariffPlanDto {
+export interface CreateTariffPlan {
   numberOfItems: number
   omOfferId: string
-  tariffPlan: SaveTariffPlanItemDto
+  tariffPlan: SaveTariffPlanItem
 }
 
-export interface SaveTariffPlanItemDto {
+export interface SaveTariffPlanItem {
   identifier: string
   name: Record<string, string>
   price: number

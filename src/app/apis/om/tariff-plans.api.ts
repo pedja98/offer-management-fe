@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getCurrentUser } from '../../../helpers/common'
 import { OmApiTags } from '../../../consts/common'
 import {
-  CreateTariffPlanDto,
-  CreateTariffPlansBulkResponseDto,
-  OmTariffPlanDto,
-  UpdateTariffPlansDto,
+  CreateTariffPlan,
+  CreateTariffPlansBulkResponse,
+  OmTariffPlan,
+  UpdateTariffPlans,
 } from '../../../types/tariffPlans'
 
 export const offerTariffPlanApi = createApi({
@@ -23,11 +23,11 @@ export const offerTariffPlanApi = createApi({
   }),
   tagTypes: [OmApiTags.TARIFF_PLANS],
   endpoints: (builder) => ({
-    getOfferTariffPlansByOfferId: builder.query<OmTariffPlanDto[], string>({
+    getOfferTariffPlansByOfferId: builder.query<OmTariffPlan[], string>({
       query: (omOfferId) => `/offer/${omOfferId}`,
       providesTags: (result, error, id) => [{ type: OmApiTags.TARIFF_PLANS, id }],
     }),
-    createTariffPlansBulk: builder.mutation<CreateTariffPlansBulkResponseDto, CreateTariffPlanDto>({
+    createTariffPlansBulk: builder.mutation<CreateTariffPlansBulkResponse, CreateTariffPlan>({
       query: (body) => ({
         url: `/bulk`,
         method: 'POST',
@@ -35,7 +35,7 @@ export const offerTariffPlanApi = createApi({
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    updateTariffPlansBulk: builder.mutation<string, UpdateTariffPlansDto>({
+    updateTariffPlansBulk: builder.mutation<string, UpdateTariffPlans>({
       query: (body) => ({
         url: `/bulk`,
         method: 'PUT',

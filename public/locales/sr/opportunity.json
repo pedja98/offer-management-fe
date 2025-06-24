@@ -1,0 +1,20 @@
+{
+  "opportunityTypes": {
+    "acquisition": "Akvizicija",
+    "renewal": "Obnova",
+    "change": "Izmena",
+    "termination": "Raskid"
+  },
+  "opportunityStatuses": {
+    "created": "Kreiran",
+    "negotiations": "U pregovorima",
+    "close_lost": "Neuspešno zatvoreno",
+    "close_won": "Uspešno zatvoreno"
+  },
+  "opportunityType": "Tip poslovne prilike",
+  "opportunityClosed": "Poslovna prilika je uspešno zatvorena",
+  "name": "Ime poslovne prilike",
+  "type": "Tip poslovne prilike",
+  "status": "Status poslovne prilike",
+  "errorRetrievingError": "Došlo je do greške pri dohvatanju podataka o kompaniji"
+}
