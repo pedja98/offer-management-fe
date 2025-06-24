@@ -11,12 +11,13 @@ import { useTranslation } from 'react-i18next'
 import { OfferStatus } from '../types/offer'
 import { useAppSelector } from '../app/hooks'
 import { CustomTableActionsProps } from '../types/common'
+import { useState, useRef, useCallback } from 'react'
+import CustomAddAction from './CustomAddAction'
 
 const CustomTableActions = ({
   searchTerm,
   onSearchChange,
   onClearSearch,
-  onAdd,
   onDelete,
   onChange,
   selectedCount,
@@ -24,14 +25,24 @@ const CustomTableActions = ({
   onFilterClick,
   onFilterClose,
   onFilterSelect,
+  module,
 }: CustomTableActionsProps) => {
   const { t } = useTranslation()
-
   const offerStatus = useAppSelector((state) => state.offer).status
+  const addButtonRef = useRef<HTMLButtonElement>(null)
+  const [open, setOpen] = useState(false)
+
+  const handleClick = useCallback(() => {
+    setOpen((prev) => !prev)
+  }, [])
+
+  const handleClose = useCallback(() => {
+    setOpen(false)
+  }, [])
 
   return (
     <Toolbar sx={{ pl: 2, pr: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+      <Box sx={{ display: 'flex' }}>
         <TextField
           size='small'
           placeholder={t('search')}
@@ -62,10 +73,45 @@ const CustomTableActions = ({
           <MenuItem onClick={() => onFilterSelect('actual')}>{t('tariffPlan:actualTariffPlans')}</MenuItem>
         </Menu>
       </Box>
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <IconButton onClick={onAdd} color='primary' disabled={offerStatus !== OfferStatus.DRAFT}>
+        <IconButton
+          ref={addButtonRef}
+          onClick={handleClick}
+          color='primary'
+          disabled={offerStatus !== OfferStatus.DRAFT}
+        >
           <AddIcon />
         </IconButton>
+
+        <Menu
+          anchorEl={addButtonRef.current}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          disableAutoFocusItem
+          MenuListProps={{
+            sx: { p: 0 },
+          }}
+          PaperProps={{
+            sx: {
+              boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+              border: '1px solid rgba(0, 0, 0, 0.12)',
+              borderRadius: 1,
+              mt: 0.5,
+            },
+          }}
+        >
+          <CustomAddAction module={module} />
+        </Menu>
+
         <IconButton
           onClick={onDelete}
           color='primary'
@@ -73,6 +119,7 @@ const CustomTableActions = ({
         >
           <DeleteIcon />
         </IconButton>
+
         <IconButton
           onClick={onChange}
           color='primary'

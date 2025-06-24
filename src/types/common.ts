@@ -60,7 +60,6 @@ export interface CustomTableActionsProps {
   searchTerm: string
   onSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void
-  onAdd: () => void
   onDelete: () => void
   onChange: () => void
   selectedCount: number
@@ -68,4 +67,15 @@ export interface CustomTableActionsProps {
   onFilterClick: (e: MouseEvent<HTMLElement>) => void
   onFilterClose: () => void
   onFilterSelect: (filter: string) => void
+  module: CustomTableModule
+}
+
+export enum CustomTableModule {
+  TariffPlan = 'tariffPlan',
+  Addon = 'addon',
+}
+
+export interface ItemName {
+  sr: string
+  en: string
 }

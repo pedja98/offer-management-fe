@@ -16,7 +16,7 @@ import { OpportunityType } from '../../types/opportunity'
 import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
-import { ApiException } from '../../types/common'
+import { ApiException, CustomTableModule, ItemName } from '../../types/common'
 import { deleteTariffPlansByIds, setTariffPlanData } from '../../features/tariff-plans.slice'
 
 const TariffAndBenefitsAccordionItem = () => {
@@ -30,7 +30,7 @@ const TariffAndBenefitsAccordionItem = () => {
 
   const { isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
   const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
-  const [deleteTariffPlansBulk] = useDeleteTariffPlansBulkMutation()
+  const [deleteTariffPlansBulk, { isLoading: isLoadingDeleteTariffPlansBulk }] = useDeleteTariffPlansBulkMutation()
 
   const tariffPlansMap = useAppSelector((state) => state.tariffPlans)
   const tariffPlans = Object.values(tariffPlansMap)
@@ -88,10 +88,6 @@ const TariffAndBenefitsAccordionItem = () => {
   const handleClearSearch = () => {
     setSearchTerm('')
     setPage(0)
-  }
-
-  const handleAdd = () => {
-    console.log('Add new tariff plan')
   }
 
   const handleChange = () => {
@@ -188,10 +184,12 @@ const TariffAndBenefitsAccordionItem = () => {
       Object.values(plan).some(
         (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()),
       ) ||
-      (plan.plannedTpName[language] || plan.plannedTpName['en'] || '')
+      (plan.plannedTpName[language.toLowerCase() as keyof ItemName] || plan.plannedTpName['en'] || '')
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      (plan.actualTpName[language] || plan.actualTpName['en'] || '').toLowerCase().includes(searchTerm.toLowerCase())
+      (plan.actualTpName[language.toLowerCase() as keyof ItemName] || plan.actualTpName['en'] || '')
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
 
     const matchesFilter =
       selectedFilter === 'all' ||
@@ -208,7 +206,7 @@ const TariffAndBenefitsAccordionItem = () => {
     filteredTp?.map((tp) => transformTariffPlansIntoTableData(tp, language, disabledDeactivation, handleDeactivate)) ||
     []
 
-  if (isLoadingGetOfferTP) {
+  if (isLoadingGetOfferTP || isLoadingDeleteTariffPlansBulk) {
     return <Spinner />
   }
 
@@ -225,10 +223,10 @@ const TariffAndBenefitsAccordionItem = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <CustomTableActions
+        module={CustomTableModule.TariffPlan}
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         onClearSearch={handleClearSearch}
-        onAdd={handleAdd}
         onDelete={handleDelete}
         onChange={handleChange}
         selectedCount={selectedIds.size}

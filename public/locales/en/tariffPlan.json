@@ -14,5 +14,8 @@
   "activation": "Activation",
   "delete": "Delete",
   "deleteConfirmation": "Are you sure that you want to delete tariff plan/s?",
-  "tariffPlansDeleted": "You have successfully delete selected tariff plans"
+  "tariffPlansDeleted": "You have successfully delete selected tariff plans",
+  "tariffPlan": "Tariff plan",
+  "quantity": "Quantity",
+  "addTariffPlans": "You have successfully added new tariff plans to your offer"
 }

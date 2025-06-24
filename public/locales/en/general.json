@@ -10,5 +10,6 @@
   "dialogConfirmationButtonLabels": { "yes": "Yes", "no": "No" },
   "calculateNotPerform": "In order to change the status, you need to perform a calculation",
   "notAllowedToChangeToStatus": "You are not permitted to change the status",
-  "search": "Search"
+  "search": "Search",
+  "add": "Add"
 }

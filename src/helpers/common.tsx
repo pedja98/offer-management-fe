@@ -1,11 +1,13 @@
 import Cookies from 'js-cookie'
 import { AuthState, Language } from '../types/auth'
 import { ReactNode } from 'react'
-import { AccordionOptions } from '../types/common'
+import { AccordionOptions, CustomTableModule } from '../types/common'
 import CompanyAccordionItem from '../components/AccordionItems/CompanyAccordionItem'
 import ApprovalAccordionItem from '../components/AccordionItems/ApprovalAccordionItem'
 import OfferAccordionItem from '../components/AccordionItems/OfferAccordionItem'
 import TariffAndBenefitsAccordionItem from '../components/AccordionItems/TariffAndBenefitsAccordionItem'
+import AddonAddActionItem from '../components/AddActionItems/AddonAddActionItem'
+import TariffPlanAddActionItem from '../components/AddActionItems/TariffPlanAddActionItem'
 
 export const getCurrentUser = (): AuthState | undefined => {
   const cookie = Cookies.get('currentUser')
@@ -31,4 +33,13 @@ export const getAccordionContext = (currentOption: AccordionOptions): ReactNode 
   }
 
   return items[currentOption]
+}
+
+export const getAddActionContext = (module: CustomTableModule): ReactNode | undefined => {
+  const items: Partial<Record<CustomTableModule, ReactNode>> = {
+    [CustomTableModule.Addon]: <AddonAddActionItem />,
+    [CustomTableModule.TariffPlan]: <TariffPlanAddActionItem />,
+  }
+
+  return items[module]
 }
