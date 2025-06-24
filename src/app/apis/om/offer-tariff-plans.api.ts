@@ -43,11 +43,21 @@ export const offerTariffPlanApi = createApi({
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    deleteTariffPlansBulk: builder.mutation<string, string[]>({
+    deleteTariffPlansBulk: builder.mutation<{ message: string }, string[]>({
       query: (body) => ({
         url: `/bulk`,
         method: 'DELETE',
         body: body,
+      }),
+      invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
+    }),
+    deactivateOfferTariffPlan: builder.mutation<string, { id: string; value: boolean }>({
+      query: ({ id, value }) => ({
+        url: `/${id}/deactivate`,
+        method: 'PATCH',
+        body: {
+          deactivate: value,
+        },
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
@@ -59,4 +69,5 @@ export const {
   useCreateTariffPlansBulkMutation,
   useDeleteTariffPlansBulkMutation,
   useUpdateTariffPlansBulkMutation,
+  useDeactivateOfferTariffPlanMutation,
 } = offerTariffPlanApi

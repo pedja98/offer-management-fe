@@ -8,5 +8,12 @@
   "allTariffPlans": "Svi tarifni planovi",
   "search": "Pretraži",
   "deactivate": "Deaktiviraj",
-  "errorRetrievingError": "Došlo je do greške pri dohvatanju podataka o tarifnim planovima"
+  "errorRetrievingError": "Došlo je do greške pri dohvatanju podataka o tarifnim planovima",
+  "areYouSureToDeactivate": "Da li ste sigurni da želite da deaktivirate tarifni plan?",
+  "areYouSureToActivate": "Da li ste sigurni da želite da aktivirate tarifni plan, koji ste deakviriali?",
+  "deactivation": "Deaktivacija",
+  "activation": "Aktivacija",
+  "delete": "Obriši",
+  "deleteConfirmation": "Da li ste sigurni da želite da obrišete tarifni plan/ove?",
+  "tariffPlansDeleted": "Uspešno ste obrisali selektovane tarifne planove"
 }

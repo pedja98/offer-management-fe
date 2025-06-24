@@ -16,6 +16,7 @@ export const transformTariffPlansIntoTableData = (
   tariffPlan: OmTariffPlan,
   language: Language,
   disabledDeactivation: boolean,
+  handleDeactivate: (id: string, checked: boolean) => void,
 ): TableRowData => ({
   plannedTpName: {
     value: tariffPlan.plannedTpName[language.toLowerCase()] || EmptyValue,
@@ -45,5 +46,6 @@ export const transformTariffPlansIntoTableData = (
     value: tariffPlan.deactivate,
     type: GridFieldTypes.CHECKBOX,
     disabled: disabledDeactivation,
+    handleCheckBoxCheck: handleDeactivate,
   },
 })

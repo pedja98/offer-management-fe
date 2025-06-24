@@ -32,3 +32,7 @@ export interface SaveTariffPlanItem {
   name: Record<string, string>
   price: number
 }
+
+export interface TariffPlansState {
+  [index: string]: OmTariffPlan
+}

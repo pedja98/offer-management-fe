@@ -86,7 +86,9 @@ const CustomTable = ({
                         <Checkbox
                           checked={!!row.value}
                           disabled={row.disabled}
-                          // onChange={(e) => onSelectItem(rowId, e.target.checked)}
+                          onChange={(e) =>
+                            row?.handleCheckBoxCheck ? row?.handleCheckBoxCheck(rowId, e.target.checked) : undefined
+                          }
                           color='primary'
                         />
                       </TableCell>

@@ -4,17 +4,19 @@ import ConfirmReducer from '../features/confirm.slice'
 import NotificationReducer from '../features/notifications.slice'
 import OfferReducer from '../features/offer.slice'
 import OpportunityReducer from '../features/opportunity.slice'
+import TariffPlansReducer from '../features/tariff-plans.slice'
 import { gwApi } from './apis/core/gw.api'
 import { crmApi } from './apis/core/crm.api'
 import { pcApi } from './apis/core/pc.api'
 import { omApi } from './apis/core/om.api'
-import { offerTariffPlanApi } from './apis/om/tariff-plans.api'
+import { offerTariffPlanApi } from './apis/om/offer-tariff-plans.api'
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
   notifications: NotificationReducer,
   confirm: ConfirmReducer,
   offer: OfferReducer,
+  tariffPlans: TariffPlansReducer,
   opportunity: OpportunityReducer,
   [gwApi.reducerPath]: gwApi.reducer,
   [crmApi.reducerPath]: crmApi.reducer,

@@ -7,5 +7,12 @@
   "actualTariffPlans": "Planned tariff plans",
   "allTariffPlans": "All tariff plans",
   "deactivate": "Deactivate",
-  "errorRetrievingError": "Error occur while retrieving tariff plans data"
+  "errorRetrievingError": "Error occur while retrieving tariff plans data",
+  "areYouSureToDeactivate": "Are you sure that you want to deactivate tariff plan?",
+  "areYouSureToActivate": "Are you sure that you want to activate tariff plan, that you deactivate?",
+  "deactivation": "Deactivation",
+  "activation": "Activation",
+  "delete": "Delete",
+  "deleteConfirmation": "Are you sure that you want to delete tariff plan/s?",
+  "tariffPlansDeleted": "You have successfully delete selected tariff plans"
 }

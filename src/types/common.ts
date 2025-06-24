@@ -34,6 +34,7 @@ export interface TableRowData {
     value: string | number | null | undefined | null | boolean
     type: GridFieldType
     disabled?: boolean
+    handleCheckBoxCheck?: (id: string, checked: boolean) => void
   }
 }
 

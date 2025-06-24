@@ -1,24 +1,39 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Typography } from '@mui/material'
-import { useAppSelector } from '../../app/hooks'
-import { useGetOfferTariffPlansByOfferIdQuery } from '../../app/apis/om/tariff-plans.api'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import {
+  useGetOfferTariffPlansByOfferIdQuery,
+  useDeactivateOfferTariffPlanMutation,
+  useDeleteTariffPlansBulkMutation,
+} from '../../app/apis/om/offer-tariff-plans.api'
 import Spinner from '../Spinner'
 import CustomTable from '../CustomTable'
 import CustomTableActions from '../CustomTableActions'
 import { getTariffPlansTableColumnsLabels, transformTariffPlansIntoTableData } from '../../transformers/tariffPlans'
 import { OfferStatus } from '../../types/offer'
 import { OpportunityType } from '../../types/opportunity'
+import { hideConfirm, showConfirm } from '../../features/confirm.slice'
+import { setNotification } from '../../features/notifications.slice'
+import { NotificationType } from '../../types/notification'
+import { ApiException } from '../../types/common'
+import { deleteTariffPlansByIds, setTariffPlanData } from '../../features/tariff-plans.slice'
 
 const TariffAndBenefitsAccordionItem = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
 
   const omOfferId = useAppSelector((state) => state.offer).id
   const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
   const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
-  const { data: tariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
+  const { isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
+  const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
+  const [deleteTariffPlansBulk] = useDeleteTariffPlansBulkMutation()
+
+  const tariffPlansMap = useAppSelector((state) => state.tariffPlans)
+  const tariffPlans = Object.values(tariffPlansMap)
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [page, setPage] = useState(0)
@@ -86,8 +101,84 @@ const TariffAndBenefitsAccordionItem = () => {
   }
 
   const handleDelete = () => {
-    if (selectedIds.size > 0) {
-      setSelectedIds(new Set())
+    dispatch(
+      showConfirm({
+        confirmationText: t('tariffPlan:deleteConfirmation'),
+        confirmationTitle: t('tariffPlan:delete').toUpperCase(),
+        onConfirm: handleConfirmDeletion,
+        onCancel: handleConfirmClose,
+        confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
+        denyButtonLabel: t('dialogConfirmationButtonLabels.no'),
+      }),
+    )
+  }
+
+  const handleConfirmClose = () => {
+    dispatch(hideConfirm())
+  }
+
+  const handleConfirmDeletion = async () => {
+    try {
+      const result = await deleteTariffPlansBulk(Array.from(selectedIds))
+      dispatch(deleteTariffPlansByIds(Array.from(selectedIds)))
+      dispatch(
+        setNotification({
+          text: t(`tariffPlan:${result.data?.message}`),
+          type: NotificationType.Success,
+        }),
+      )
+    } catch (err) {
+      const errorResponse = err as { data: ApiException }
+      const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
+      dispatch(
+        setNotification({
+          text: t(errorCode),
+          type: NotificationType.Error,
+        }),
+      )
+    } finally {
+      dispatch(hideConfirm())
+    }
+  }
+
+  const handleDeactivate = (id: string, checked: boolean) => {
+    dispatch(
+      showConfirm({
+        confirmationText: checked ? t('tariffPlan:areYouSureToDeactivate') : t('tariffPlan:areYouSureToActivate'),
+        confirmationTitle: checked
+          ? t('tariffPlan:deactivation').toUpperCase()
+          : t('tariffPlan:activation').toUpperCase(),
+        onConfirm: () => {
+          handleConfirmDeactivation(id, checked)
+        },
+        onCancel: handleConfirmClose,
+        confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
+        denyButtonLabel: t('dialogConfirmationButtonLabels.no'),
+      }),
+    )
+  }
+
+  const handleConfirmDeactivation = async (id: string, checked: boolean) => {
+    try {
+      await deactivateOfferTariffPlan({ id, value: checked })
+      dispatch(
+        setTariffPlanData({
+          id,
+          key: 'deactivate',
+          value: checked,
+        }),
+      )
+    } catch (err) {
+      const errorResponse = err as { data: ApiException }
+      const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
+      dispatch(
+        setNotification({
+          text: t(errorCode),
+          type: NotificationType.Error,
+        }),
+      )
+    } finally {
+      dispatch(hideConfirm())
     }
   }
 
@@ -114,7 +205,8 @@ const TariffAndBenefitsAccordionItem = () => {
 
   const filteredTpIds = filteredTp?.map((tariffPlan) => tariffPlan.id) || []
   const filteredTpRows =
-    filteredTp?.map((tp) => transformTariffPlansIntoTableData(tp, language, disabledDeactivation)) || []
+    filteredTp?.map((tp) => transformTariffPlansIntoTableData(tp, language, disabledDeactivation, handleDeactivate)) ||
+    []
 
   if (isLoadingGetOfferTP) {
     return <Spinner />
