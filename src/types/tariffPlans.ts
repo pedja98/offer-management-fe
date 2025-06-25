@@ -18,11 +18,6 @@ export interface OmTariffPlan {
   deactivate: boolean
 }
 
-export interface CreateTariffPlansBulkResponse {
-  message: string
-  tariffPlans: OmTariffPlan[]
-}
-
 export interface CreateTariffPlan {
   numberOfItems: number
   omOfferId: string

@@ -1,7 +1,6 @@
 import { Autocomplete, Box, Grid, Popper, TextField } from '@mui/material'
 import { useGetActiveTariffPlansQuery } from '../../app/apis/pc/tariff-plans.api'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import Spinner from '../Spinner'
 import { ApiException, ItemName } from '../../types/common'
 import { SyntheticEvent, useMemo, useState } from 'react'
 import { CreateTariffPlan, PcTariffPlan, SaveTariffPlanItem } from '../../types/tariffPlans'
@@ -85,10 +84,6 @@ const TariffPlanAddActionItem = () => {
     }
   }
 
-  if (isLoadingGetPcTariffPlans) {
-    return <Spinner />
-  }
-
   return (
     <Box sx={{ width: '100%', minWidth: 500, height: '90px', pl: 1, pr: 1, pt: 2 }}>
       <Grid container spacing={2} alignItems='flex-end'>
@@ -108,6 +103,7 @@ const TariffPlanAddActionItem = () => {
           <Autocomplete
             id='tariff-plan-autocomplete'
             options={options}
+            disabled={isLoadingGetPcTariffPlans}
             value={selectedTariffPlan ? selectedTariffPlan.name[language.toLocaleLowerCase() as keyof ItemName] : null}
             onChange={handleTariffPlanChange}
             getOptionLabel={(option) => option}

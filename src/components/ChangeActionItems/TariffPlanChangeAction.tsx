@@ -1,7 +1,6 @@
 import { Autocomplete, Box, Grid, Popper, TextField } from '@mui/material'
 import { useGetActiveTariffPlansQuery } from '../../app/apis/pc/tariff-plans.api'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import Spinner from '../Spinner'
 import { ApiException, ItemName } from '../../types/common'
 import { SyntheticEvent, useMemo, useState } from 'react'
 import { PcTariffPlan, UpdateTariffPlans } from '../../types/tariffPlans'
@@ -58,6 +57,7 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
           type: NotificationType.Success,
         }),
       )
+      selectedIds.clear()
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
@@ -70,10 +70,6 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
     }
   }
 
-  if (isLoadingGetPcTariffPlans) {
-    return <Spinner />
-  }
-
   return (
     <Box sx={{ width: '100%', minWidth: 400, height: '90px', pl: 1, pr: 1, pt: 2 }}>
       <Grid container spacing={2} alignItems='flex-end'>
@@ -83,6 +79,7 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
             options={options}
             value={selectedTariffPlan ? selectedTariffPlan.name[language.toLocaleLowerCase() as keyof ItemName] : null}
             onChange={handleTariffPlanChange}
+            disabled={isLoadingGetPcTariffPlans}
             getOptionLabel={(option) => option}
             isOptionEqualToValue={(option, value) => option === value}
             renderInput={(params) => (

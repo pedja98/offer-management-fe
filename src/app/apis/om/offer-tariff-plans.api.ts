@@ -1,12 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getCurrentUser } from '../../../helpers/common'
 import { OmApiTags } from '../../../consts/common'
-import {
-  CreateTariffPlan,
-  CreateTariffPlansBulkResponse,
-  OmTariffPlan,
-  UpdateTariffPlans,
-} from '../../../types/tariffPlans'
+import { CreateTariffPlan, OmTariffPlan, UpdateTariffPlans } from '../../../types/tariffPlans'
 
 export const offerTariffPlanApi = createApi({
   reducerPath: 'offerTariffPlanApi',
@@ -27,7 +22,7 @@ export const offerTariffPlanApi = createApi({
       query: (omOfferId) => `/offer/${omOfferId}`,
       providesTags: (result, error, id) => [{ type: OmApiTags.TARIFF_PLANS, id }],
     }),
-    createTariffPlansBulk: builder.mutation<CreateTariffPlansBulkResponse, CreateTariffPlan>({
+    createTariffPlansBulk: builder.mutation<{ message: string }, CreateTariffPlan>({
       query: (body) => ({
         url: `/bulk`,
         method: 'POST',

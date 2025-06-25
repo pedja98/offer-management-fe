@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -17,7 +17,6 @@ import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { ApiException, CustomTableModule, ItemName } from '../../types/common'
-import { deleteTariffPlansByIds, setTariffPlanData } from '../../features/tariff-plans.slice'
 
 const TariffPlanTable = () => {
   const { t } = useTranslation()
@@ -28,12 +27,13 @@ const TariffPlanTable = () => {
   const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
-  const { isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(String(omOfferId))
+  const { data: offerTariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(
+    String(omOfferId),
+  )
   const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
   const [deleteTariffPlansBulk, { isLoading: isLoadingDeleteTariffPlansBulk }] = useDeleteTariffPlansBulkMutation()
 
-  const tariffPlansMap = useAppSelector((state) => state.tariffPlans)
-  const tariffPlans = Object.values(tariffPlansMap)
+  const tariffPlans = offerTariffPlans || []
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [page, setPage] = useState(0)
@@ -42,10 +42,6 @@ const TariffPlanTable = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all')
 
   const columns = getTariffPlansTableColumnsLabels(t)
-
-  useEffect(() => {
-    selectedIds.clear()
-  }, [tariffPlans])
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -114,13 +110,13 @@ const TariffPlanTable = () => {
   const handleConfirmDeletion = async () => {
     try {
       const result = await deleteTariffPlansBulk(Array.from(selectedIds))
-      dispatch(deleteTariffPlansByIds(Array.from(selectedIds)))
       dispatch(
         setNotification({
           text: t(`tariffPlan:${result.data?.message}`),
           type: NotificationType.Success,
         }),
       )
+      selectedIds.clear()
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
@@ -155,13 +151,6 @@ const TariffPlanTable = () => {
   const handleConfirmDeactivation = async (id: string, checked: boolean) => {
     try {
       await deactivateOfferTariffPlan({ id, value: checked })
-      dispatch(
-        setTariffPlanData({
-          id,
-          key: 'deactivate',
-          value: checked,
-        }),
-      )
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
