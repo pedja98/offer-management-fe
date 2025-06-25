@@ -10,7 +10,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { OfferStatus } from '../types/offer'
 import { useAppSelector } from '../app/hooks'
-import { CustomTableActionsProps } from '../types/common'
+import { CustomTableActionsProps, CustomTableModule } from '../types/common'
 import { useState, useRef, useCallback } from 'react'
 import CustomAddAction from './AddActionItems/CustomAddAction'
 import { ChangeVisibleModules } from '../consts/common'
@@ -56,6 +56,19 @@ const CustomTableActions = ({
     setChangeMenuOpen(false)
   }, [])
 
+  const filterOption =
+    module === CustomTableModule.TariffPlan ? (
+      <Menu anchorEl={filterAnchorEl} open={Boolean(filterAnchorEl)} onClose={onFilterClose}>
+        <MenuItem onClick={() => onFilterSelect('all')}>{t('tariffPlan:allTariffPlans')}</MenuItem>
+        <MenuItem onClick={() => onFilterSelect('planned')}>{t('tariffPlan:plannedTariffPlans')}</MenuItem>
+        <MenuItem onClick={() => onFilterSelect('actual')}>{t('tariffPlan:actualTariffPlans')}</MenuItem>
+      </Menu>
+    ) : (
+      <Menu anchorEl={filterAnchorEl} open={Boolean(filterAnchorEl)} onClose={onFilterClose}>
+        <MenuItem onClick={() => onFilterSelect('all')}>{t('addon:addonName')}</MenuItem>
+      </Menu>
+    )
+
   return (
     <Toolbar sx={{ pl: 2, pr: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}>
       <Box sx={{ display: 'flex' }}>
@@ -83,11 +96,7 @@ const CustomTableActions = ({
         <IconButton onClick={onFilterClick}>
           <FilterIcon />
         </IconButton>
-        <Menu anchorEl={filterAnchorEl} open={Boolean(filterAnchorEl)} onClose={onFilterClose}>
-          <MenuItem onClick={() => onFilterSelect('all')}>{t('tariffPlan:allTariffPlans')}</MenuItem>
-          <MenuItem onClick={() => onFilterSelect('planned')}>{t('tariffPlan:plannedTariffPlans')}</MenuItem>
-          <MenuItem onClick={() => onFilterSelect('actual')}>{t('tariffPlan:actualTariffPlans')}</MenuItem>
-        </Menu>
+        {filterOption}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
