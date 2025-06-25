@@ -1,5 +1,4 @@
 import { Autocomplete, Box, Grid, Popper, TextField } from '@mui/material'
-import { useGetActiveTariffPlansQuery } from '../../app/apis/pc/tariff-plans.api'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { ApiException, ItemName } from '../../types/common'
 import { SyntheticEvent, useMemo, useState } from 'react'
@@ -9,6 +8,7 @@ import { ButtonStyled } from '../../styles/common'
 import { useCreateTariffPlansBulkMutation } from '../../app/apis/om/offer-tariff-plans.api'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
+import { useGetActiveTariffPlansQuery } from '../../app/apis/core/pc.api'
 
 const TariffPlanAddActionItem = () => {
   const [selectedTariffPlan, setSelectedTariffPlan] = useState<PcTariffPlan | null>(null)

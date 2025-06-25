@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 import { AuthState, Language } from '../types/auth'
 import { ReactNode } from 'react'
-import { AccordionOptions, CustomTableModule } from '../types/common'
+import { AdditionalData, AccordionOptions, CustomTableModule } from '../types/common'
 import CompanyAccordionItem from '../components/AccordionItems/CompanyAccordionItem'
 import ApprovalAccordionItem from '../components/AccordionItems/ApprovalAccordionItem'
 import OfferAccordionItem from '../components/AccordionItems/OfferAccordionItem'
@@ -26,24 +26,29 @@ export const dateFormatter = (dateString?: string): string => {
   return date.toLocaleString('en-GB', { hour12: false })
 }
 
-export const getAccordionContext = (currentOption: AccordionOptions): ReactNode | undefined => {
+export const getAccordionContext = (
+  currentOption: AccordionOptions,
+  accordionAdditionalData?: AdditionalData,
+): ReactNode | undefined => {
   const items: Partial<Record<AccordionOptions, ReactNode>> = {
     [AccordionOptions.Company]: <CompanyAccordionItem />,
     [AccordionOptions.Approval]: <ApprovalAccordionItem />,
     [AccordionOptions.Offer]: <OfferAccordionItem />,
     [AccordionOptions.TariffAndBenefits]: <TariffAndBenefitsAccordionItem />,
-    [AccordionOptions.Benefits]: <BenefitsAccordionItem />,
+    [AccordionOptions.Benefits]: <BenefitsAccordionItem identifier={accordionAdditionalData?.identifier as string} />,
   }
 
   return items[currentOption]
 }
 
-export const getAddActionContext = (module: CustomTableModule): ReactNode | undefined => {
+export const getAddActionContext = (
+  module: CustomTableModule,
+  additionalData?: AdditionalData,
+): ReactNode | undefined => {
   const items: Partial<Record<CustomTableModule, ReactNode>> = {
-    [CustomTableModule.Addon]: <AddonAddActionItem />,
+    [CustomTableModule.Addon]: <AddonAddActionItem tariffPlanIdentifier={additionalData?.identifier as string} />,
     [CustomTableModule.TariffPlan]: <TariffPlanAddActionItem />,
   }
-
   return items[module]
 }
 

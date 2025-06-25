@@ -69,6 +69,7 @@ export interface CustomTableActionsProps {
   onFilterClose: () => void
   onFilterSelect: (filter: string) => void
   module: CustomTableModule
+  additionalData?: AdditionalData
 }
 
 export enum CustomTableModule {
@@ -83,9 +84,14 @@ export interface ItemName {
 
 export interface CustomAddActionProps {
   module: CustomTableModule
+  additionalData?: AdditionalData
 }
 
 export interface CustomChangeActionProps {
   module: CustomTableModule
   selectedIds: Set<string>
+}
+
+export interface AdditionalData {
+  identifier: string
 }

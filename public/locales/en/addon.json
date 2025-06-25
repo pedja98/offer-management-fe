@@ -1,0 +1,9 @@
+{
+  "name": "Name",
+  "price": "Price (RSD)",
+  "addon": "Addon",
+  "addonCreated": "You have successfully added new addon",
+  "addonsDeleted": "You have successfully delete selected addons",
+  "deleteConfirmation": "Are you sure that you want to delete addon/s?",
+  "addonDuplicate": "This addon has already been added to the specified tariff plan"
+}

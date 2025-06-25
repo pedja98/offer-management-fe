@@ -3,35 +3,32 @@ import { useTranslation } from 'react-i18next'
 import { Box, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
-  useGetOfferTariffPlansByOfferIdQuery,
-  useDeactivateOfferTariffPlanMutation,
-  useDeleteTariffPlansBulkMutation,
-} from '../../app/apis/om/offer-tariff-plans.api'
+  useGetAddonsByOfferIdAndTpIdentifierQuery,
+  useDeleteAddonsBulkMutation,
+} from '../../app/apis/om/offer-addons.api'
 import Spinner from '../Spinner'
 import CustomTable from '../CustomTable'
 import CustomTableActions from '../CustomTableActions'
-import { getTariffPlansTableColumnsLabels, transformTariffPlansIntoTableData } from '../../transformers/tariffPlans'
-import { OfferStatus } from '../../types/offer'
-import { OpportunityType } from '../../types/opportunity'
+import { getAddonTableColumnsLabels, transformAddonIntoTableData } from '../../transformers/addon'
 import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
-import { ApiException, CustomTableModule, ItemName } from '../../types/common'
+import { AdditionalData, ApiException, CustomTableModule, ItemName } from '../../types/common'
 
-const TariffPlanTable = () => {
+const AddonTable = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const omOfferId = useAppSelector((state) => state.offer).id as string
-  const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
-  const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
-  const { data: offerTariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(omOfferId)
-  const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
-  const [deleteTariffPlansBulk, { isLoading: isLoadingDeleteTariffPlansBulk }] = useDeleteTariffPlansBulkMutation()
+  const { data: addonsData, isLoading: isLoadingGetAddons } = useGetAddonsByOfferIdAndTpIdentifierQuery({
+    omOfferId,
+    tariffPlanIdentifier,
+  })
+  const [deleteAddonsBulk, { isLoading: isLoadingDeleteAddonsBulk }] = useDeleteAddonsBulkMutation()
 
-  const tariffPlans = offerTariffPlans || []
+  const addons = addonsData || []
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [page, setPage] = useState(0)
@@ -39,11 +36,11 @@ const TariffPlanTable = () => {
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedFilter, setSelectedFilter] = useState<string>('all')
 
-  const columns = getTariffPlansTableColumnsLabels(t)
+  const columns = getAddonTableColumnsLabels(t)
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const allIds = new Set(filteredTp?.map((plan) => plan.id) || [])
+      const allIds = new Set(filteredAddons?.map((addon) => addon.id) || [])
       setSelectedIds(allIds)
     } else {
       setSelectedIds(new Set())
@@ -91,8 +88,8 @@ const TariffPlanTable = () => {
   const handleDelete = () => {
     dispatch(
       showConfirm({
-        confirmationText: t('tariffPlan:deleteConfirmation'),
-        confirmationTitle: t('delete').toUpperCase(),
+        confirmationText: t('addon:deleteConfirmation'),
+        confirmationTitle: t('addon:delete').toUpperCase(),
         onConfirm: handleConfirmDeletion,
         onCancel: handleConfirmClose,
         confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
@@ -107,17 +104,17 @@ const TariffPlanTable = () => {
 
   const handleConfirmDeletion = async () => {
     try {
-      const result = await deleteTariffPlansBulk({ body: Array.from(selectedIds), omOfferId })
+      const result = await deleteAddonsBulk({ omOfferId, ids: Array.from(selectedIds) })
       dispatch(
         setNotification({
-          text: t(`tariffPlan:${result.data?.message}`),
+          text: t(`addon:${result.data?.message}`),
           type: NotificationType.Success,
         }),
       )
-      selectedIds.clear()
+      setSelectedIds(new Set())
     } catch (err) {
       const errorResponse = err as { data: ApiException }
-      const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
+      const errorCode = `addon:${errorResponse.data}` || 'general:unknownError'
       dispatch(
         setNotification({
           text: t(errorCode),
@@ -129,77 +126,37 @@ const TariffPlanTable = () => {
     }
   }
 
-  const handleDeactivate = (id: string, checked: boolean) => {
-    dispatch(
-      showConfirm({
-        confirmationText: checked ? t('tariffPlan:areYouSureToDeactivate') : t('tariffPlan:areYouSureToActivate'),
-        confirmationTitle: checked
-          ? t('tariffPlan:deactivation').toUpperCase()
-          : t('tariffPlan:activation').toUpperCase(),
-        onConfirm: () => {
-          handleConfirmDeactivation(id, checked)
-        },
-        onCancel: handleConfirmClose,
-        confirmButtonLabel: t('dialogConfirmationButtonLabels.yes'),
-        denyButtonLabel: t('dialogConfirmationButtonLabels.no'),
-      }),
-    )
-  }
-
-  const handleConfirmDeactivation = async (id: string, checked: boolean) => {
-    try {
-      await deactivateOfferTariffPlan({ id, value: checked })
-    } catch (err) {
-      const errorResponse = err as { data: ApiException }
-      const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'
-      dispatch(
-        setNotification({
-          text: t(errorCode),
-          type: NotificationType.Error,
-        }),
-      )
-    } finally {
-      dispatch(hideConfirm())
-    }
-  }
-
-  const filteredTp = tariffPlans?.filter((plan) => {
+  const filteredAddons = addons?.filter((addon) => {
     const matchesSearch =
       searchTerm === '' ||
-      Object.values(plan).some(
+      Object.values(addon).some(
         (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()),
       ) ||
-      (plan.plannedTpName[language.toLowerCase() as keyof ItemName] || plan.plannedTpName['en'] || '')
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      (plan.actualTpName[language.toLowerCase() as keyof ItemName] || plan.actualTpName['en'] || '')
+      (addon.name[language.toLowerCase() as keyof ItemName] || addon.name['en'] || '')
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
 
-    const matchesFilter =
-      selectedFilter === 'all' ||
-      (selectedFilter === 'planned' && !plan.plannedTpPrice) ||
-      (selectedFilter === 'actual' && !plan.actualTpPrice)
+    const matchesFilter = selectedFilter === 'all'
 
     return matchesSearch && matchesFilter
   })
 
-  const disabledDeactivation = offerStatus !== OfferStatus.DRAFT || opportunityType === OpportunityType.ACQUISITION
+  const filteredAddonIds = filteredAddons?.map((addon) => addon.id) || []
+  const filteredAddonRows = filteredAddons?.map((addon) => transformAddonIntoTableData(addon, language)) || []
 
-  const filteredTpIds = filteredTp?.map((tariffPlan) => tariffPlan.id) || []
-  const filteredTpRows =
-    filteredTp?.map((tp) => transformTariffPlansIntoTableData(tp, language, disabledDeactivation, handleDeactivate)) ||
-    []
+  const additionalData = {
+    identifier: tariffPlanIdentifier,
+  } as AdditionalData
 
-  if (isLoadingGetOfferTP || isLoadingDeleteTariffPlansBulk) {
+  if (isLoadingGetAddons || isLoadingDeleteAddonsBulk) {
     return <Spinner />
   }
 
-  if (!tariffPlans) {
+  if (!addons) {
     return (
       <Box display='flex' justifyContent='center' py={4}>
         <Typography variant='body2' color='text.secondary'>
-          {t('tariffPlan:errorRetrievingError')}
+          {t('addon:errorRetrievingError')}
         </Typography>
       </Box>
     )
@@ -209,7 +166,7 @@ const TariffPlanTable = () => {
     <Box sx={{ width: '100%' }}>
       <CustomTableActions
         selectedIds={selectedIds}
-        module={CustomTableModule.TariffPlan}
+        module={CustomTableModule.Addon}
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         onClearSearch={handleClearSearch}
@@ -219,10 +176,11 @@ const TariffPlanTable = () => {
         onFilterClick={handleFilterClick}
         onFilterClose={handleFilterClose}
         onFilterSelect={handleFilterSelect}
+        additionalData={additionalData}
       />
       <CustomTable
-        data={filteredTpRows}
-        rowIds={filteredTpIds}
+        data={filteredAddonRows}
+        rowIds={filteredAddonIds}
         page={page}
         columns={columns}
         onPageChange={handleChangePage}
@@ -234,4 +192,4 @@ const TariffPlanTable = () => {
   )
 }
 
-export default TariffPlanTable
+export default AddonTable

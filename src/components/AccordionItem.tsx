@@ -3,16 +3,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
 import { TernaryColor, WhiteTeamColor } from '../consts/common'
 import { getAccordionContext } from '../helpers/common'
-import { AccordionOptions } from '../types/common'
+import { AdditionalData, AccordionOptions } from '../types/common'
 
 const AccordionItem = ({
   accordionKey,
   accordionTitle,
   accordionExpanded = true,
+  additionalData,
 }: {
   accordionKey: string
   accordionTitle: string
   accordionExpanded?: boolean
+  additionalData?: AdditionalData
 }) => {
   const [expanded, setExpanded] = useState(accordionExpanded)
 
@@ -25,7 +27,7 @@ const AccordionItem = ({
     setExpanded(false)
   }
 
-  const accordionContext = getAccordionContext(accordionKey as AccordionOptions)
+  const accordionContext = getAccordionContext(accordionKey as AccordionOptions, additionalData)
 
   return (
     <Accordion expanded={expanded} onChange={handleToggle}>

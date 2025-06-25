@@ -3,7 +3,7 @@ import { useGetOfferTariffPlansIdentifierCountsQuery } from '../../app/apis/om/o
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import Spinner from '../Spinner'
 import AccordionItem from '../AccordionItem'
-import { AccordionOptions, ItemName } from '../../types/common'
+import { AdditionalData, AccordionOptions, ItemName } from '../../types/common'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { useTranslation } from 'react-i18next'
@@ -39,9 +39,18 @@ const Benefits = () => {
       {Object.keys(identifiersCounts).map((key) => {
         const element = identifiersCounts[key]
         const title = element.name[language.toLowerCase() as keyof ItemName] + ': ' + element.count
+        const additionalData = {
+          identifier: key,
+        } as AdditionalData
+
         return (
-          <Grid item key={key} sx={{ width: '95%', mt: 2, mb: 3 }}>
-            <AccordionItem accordionKey={AccordionOptions.Benefits} accordionTitle={title} accordionExpanded={false} />
+          <Grid item key={key} sx={{ width: '95%', mb: 3 }}>
+            <AccordionItem
+              accordionKey={AccordionOptions.Benefits}
+              accordionTitle={title}
+              accordionExpanded={false}
+              additionalData={additionalData}
+            />
           </Grid>
         )
       })}

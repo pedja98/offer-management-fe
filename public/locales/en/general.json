@@ -12,5 +12,6 @@
   "notAllowedToChangeToStatus": "You are not permitted to change the status",
   "search": "Search",
   "add": "Add",
-  "change": "Change"
+  "change": "Change",
+  "delete": "Delete"
 }

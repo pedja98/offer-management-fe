@@ -14,6 +14,7 @@ import { CustomTableActionsProps } from '../types/common'
 import { useState, useRef, useCallback } from 'react'
 import CustomAddAction from './CustomAddAction'
 import CustomChangeAction from './CustomChangeAction'
+import { ChangeVisibleModules } from '../consts/common'
 
 const CustomTableActions = ({
   searchTerm,
@@ -27,6 +28,7 @@ const CustomTableActions = ({
   onFilterSelect,
   selectedIds,
   module,
+  additionalData,
 }: CustomTableActionsProps) => {
   const { t } = useTranslation()
   const offerStatus = useAppSelector((state) => state.offer).status
@@ -116,7 +118,7 @@ const CustomTableActions = ({
               sx: { p: 0 },
             }}
           >
-            <CustomAddAction module={module} />
+            <CustomAddAction module={module} additionalData={additionalData} />
           </Menu>
         </Grid>
 
@@ -128,35 +130,37 @@ const CustomTableActions = ({
           <DeleteIcon />
         </IconButton>
 
-        <Grid>
-          <IconButton
-            ref={changeButtonRef}
-            onClick={handleChangeClick}
-            color='primary'
-            disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
-          >
-            <SwapVerticalCircleOutlined />
-          </IconButton>
-          <Menu
-            anchorEl={changeButtonRef.current}
-            open={changeMenuOpen}
-            onClose={handleChangeClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            disableAutoFocusItem
-            MenuListProps={{
-              sx: { p: 0 },
-            }}
-          >
-            <CustomChangeAction module={module} selectedIds={selectedIds} />
-          </Menu>
-        </Grid>
+        {ChangeVisibleModules.includes(module) && (
+          <Grid>
+            <IconButton
+              ref={changeButtonRef}
+              onClick={handleChangeClick}
+              color='primary'
+              disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
+            >
+              <SwapVerticalCircleOutlined />
+            </IconButton>
+            <Menu
+              anchorEl={changeButtonRef.current}
+              open={changeMenuOpen}
+              onClose={handleChangeClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              disableAutoFocusItem
+              MenuListProps={{
+                sx: { p: 0 },
+              }}
+            >
+              <CustomChangeAction module={module} selectedIds={selectedIds} />
+            </Menu>
+          </Grid>
+        )}
       </Box>
     </Toolbar>
   )

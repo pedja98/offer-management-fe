@@ -12,5 +12,6 @@
   "notAllowedToChangeToStatus": "Nije vam dozvoljeno da promenite status",
   "search": "Pretraži",
   "add": "Dodaj",
-  "change": "Izmeni"
+  "change": "Izmeni",
+  "delete": "Obriši"
 }

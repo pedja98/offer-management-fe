@@ -1,0 +1,9 @@
+{
+  "name": "Ime",
+  "price": "Cena (RSD)",
+  "addon": "Dodatak",
+  "addonCreated": "Uspešno ste dodali nove dodatke na ponudu",
+  "addonsDeleted": "Uspešno ste obrisali odabrane dodatke",
+  "deleteConfirmation": "Da li ste sigurni da želite da obrišete dodatak/ke?",
+  "addonDuplicate": "Ovaj dodatak je već dodat za navedeni tarifni plan"
+}

@@ -1,4 +1,4 @@
-import { AccordionOptions } from '../types/common'
+import { AccordionOptions, CustomTableModule } from '../types/common'
 
 export const PrimaryThemeColor = '#6e6e6e'
 
@@ -43,3 +43,5 @@ export const OmApiTags = {
   COMPANY: 'Company',
   OFFER: 'Offer',
 }
+
+export const ChangeVisibleModules = [CustomTableModule.TariffPlan]
