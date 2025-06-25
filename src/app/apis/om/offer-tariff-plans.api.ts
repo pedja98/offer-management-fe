@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getCurrentUser } from '../../../helpers/common'
 import { OmApiTags } from '../../../consts/common'
-import { CreateTariffPlan, OmTariffPlan, UpdateTariffPlans } from '../../../types/tariffPlans'
+import {
+  CreateTariffPlan,
+  OmTariffPlan,
+  TariffPlansIdentifierCountResponse,
+  UpdateTariffPlans,
+} from '../../../types/tariffPlans'
 
 export const offerTariffPlanApi = createApi({
   reducerPath: 'offerTariffPlanApi',
@@ -22,6 +27,10 @@ export const offerTariffPlanApi = createApi({
       query: (omOfferId) => `/offer/${omOfferId}`,
       providesTags: (result, error, id) => [{ type: OmApiTags.TARIFF_PLANS, id }],
     }),
+    getOfferTariffPlansIdentifierCounts: builder.query<TariffPlansIdentifierCountResponse, string>({
+      query: (omOfferId) => `/offer/${omOfferId}/identifier-counts`,
+      providesTags: (result, error, id) => [{ type: OmApiTags.TARIFF_PLANS, id }],
+    }),
     createTariffPlansBulk: builder.mutation<{ message: string }, CreateTariffPlan>({
       query: (body) => ({
         url: `/bulk`,
@@ -30,17 +39,17 @@ export const offerTariffPlanApi = createApi({
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    updateTariffPlansBulk: builder.mutation<{ message: string }, UpdateTariffPlans>({
-      query: (body) => ({
-        url: `/bulk`,
+    updateTariffPlansBulk: builder.mutation<{ message: string }, { omOfferId: string; body: UpdateTariffPlans }>({
+      query: ({ omOfferId, body }) => ({
+        url: `/offer/${omOfferId}/bulk`,
         method: 'PUT',
         body: body,
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    deleteTariffPlansBulk: builder.mutation<{ message: string }, string[]>({
-      query: (body) => ({
-        url: `/bulk`,
+    deleteTariffPlansBulk: builder.mutation<{ message: string }, { omOfferId: string; body: string[] }>({
+      query: ({ omOfferId, body }) => ({
+        url: `/offer/${omOfferId}/bulk`,
         method: 'DELETE',
         body: body,
       }),
@@ -65,4 +74,5 @@ export const {
   useDeleteTariffPlansBulkMutation,
   useUpdateTariffPlansBulkMutation,
   useDeactivateOfferTariffPlanMutation,
+  useGetOfferTariffPlansIdentifierCountsQuery,
 } = offerTariffPlanApi

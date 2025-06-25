@@ -22,14 +22,12 @@ const TariffPlanTable = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const omOfferId = useAppSelector((state) => state.offer).id
+  const omOfferId = useAppSelector((state) => state.offer).id as string
   const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
   const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
-  const { data: offerTariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(
-    String(omOfferId),
-  )
+  const { data: offerTariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(omOfferId)
   const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
   const [deleteTariffPlansBulk, { isLoading: isLoadingDeleteTariffPlansBulk }] = useDeleteTariffPlansBulkMutation()
 
@@ -109,7 +107,7 @@ const TariffPlanTable = () => {
 
   const handleConfirmDeletion = async () => {
     try {
-      const result = await deleteTariffPlansBulk(Array.from(selectedIds))
+      const result = await deleteTariffPlansBulk({ body: Array.from(selectedIds), omOfferId })
       dispatch(
         setNotification({
           text: t(`tariffPlan:${result.data?.message}`),

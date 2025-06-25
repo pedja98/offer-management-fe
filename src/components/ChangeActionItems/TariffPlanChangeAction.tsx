@@ -16,6 +16,7 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
   const dispatch = useAppDispatch()
 
   const language = useAppSelector((state) => state.auth).language
+  const omOfferId = useAppSelector((state) => state.offer).id as string
 
   const { data: pcTariffPlans, isLoading: isLoadingGetPcTariffPlans } = useGetActiveTariffPlansQuery()
   const [updateTariffPlansBulk, { isLoading: isLoadingUpdateTariffPlansBulk }] = useUpdateTariffPlansBulkMutation()
@@ -50,7 +51,10 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
         newTpName: selectedTariffPlan?.name,
       } as UpdateTariffPlans
 
-      const result = await updateTariffPlansBulk(updateTariffPlan)
+      const result = await updateTariffPlansBulk({
+        omOfferId,
+        body: updateTariffPlan,
+      })
       dispatch(
         setNotification({
           text: t(`tariffPlan:${result.data?.message}`),

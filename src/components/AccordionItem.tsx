@@ -1,14 +1,20 @@
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Grid } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { TernaryColor, WhiteTeamColor } from '../consts/common'
 import { getAccordionContext } from '../helpers/common'
 import { AccordionOptions } from '../types/common'
 
-const AccordionItem = ({ accordionKey }: { accordionKey: string }) => {
-  const { t } = useTranslation()
-  const [expanded, setExpanded] = useState(true)
+const AccordionItem = ({
+  accordionKey,
+  accordionTitle,
+  accordionExpanded = true,
+}: {
+  accordionKey: string
+  accordionTitle: string
+  accordionExpanded?: boolean
+}) => {
+  const [expanded, setExpanded] = useState(accordionExpanded)
 
   const handleToggle = () => {
     setExpanded(!expanded)
@@ -36,7 +42,7 @@ const AccordionItem = ({ accordionKey }: { accordionKey: string }) => {
         }}
       >
         <Typography variant='h6' sx={{ color: WhiteTeamColor }}>
-          {t(`accordionOptions.${accordionKey}`)}
+          {accordionTitle}
         </Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ backgroundColor: 'white' }}>

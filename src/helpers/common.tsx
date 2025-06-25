@@ -9,6 +9,7 @@ import TariffAndBenefitsAccordionItem from '../components/AccordionItems/TariffA
 import AddonAddActionItem from '../components/AddActionItems/AddonAddActionItem'
 import TariffPlanAddActionItem from '../components/AddActionItems/TariffPlanAddActionItem'
 import TariffPlanChangeAction from '../components/ChangeActionItems/TariffPlanChangeAction'
+import BenefitsAccordionItem from '../components/AccordionItems/BenefitsAccordionItem'
 
 export const getCurrentUser = (): AuthState | undefined => {
   const cookie = Cookies.get('currentUser')
@@ -31,6 +32,7 @@ export const getAccordionContext = (currentOption: AccordionOptions): ReactNode 
     [AccordionOptions.Approval]: <ApprovalAccordionItem />,
     [AccordionOptions.Offer]: <OfferAccordionItem />,
     [AccordionOptions.TariffAndBenefits]: <TariffAndBenefitsAccordionItem />,
+    [AccordionOptions.Benefits]: <BenefitsAccordionItem />,
   }
 
   return items[currentOption]

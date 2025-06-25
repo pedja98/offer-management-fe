@@ -30,8 +30,11 @@ export interface SaveTariffPlanItem {
   price: number
 }
 
-export interface TariffPlansState {
-  [index: string]: OmTariffPlan
+export interface TariffPlansIdentifierCountResponse {
+  [index: string]: {
+    name: ItemName
+    count: number
+  }
 }
 
 export interface PcTariffPlan {

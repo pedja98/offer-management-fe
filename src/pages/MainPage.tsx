@@ -25,7 +25,7 @@ const MainPage: React.FC<{ crmOfferId: number }> = ({ crmOfferId }) => {
     <Grid container direction='column' spacing={2} sx={{ width: '100%' }} alignItems='center'>
       {AccordionItems.map((accordionKey) => (
         <Grid item key={accordionKey} sx={{ width: '95%', mt: 2, mb: 3 }}>
-          <AccordionItem accordionKey={accordionKey} />
+          <AccordionItem accordionKey={accordionKey} accordionTitle={t(`accordionOptions.${accordionKey}`)} />
         </Grid>
       ))}
     </Grid>
