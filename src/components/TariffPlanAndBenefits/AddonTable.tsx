@@ -22,10 +22,15 @@ const AddonTable = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) 
   const omOfferId = useAppSelector((state) => state.offer).id as string
   const language = useAppSelector((state) => state.auth).language
 
-  const { data: addonsData, isLoading: isLoadingGetAddons } = useGetAddonsByOfferIdAndTpIdentifierQuery({
-    omOfferId,
-    tariffPlanIdentifier,
-  })
+  const { data: addonsData, isLoading: isLoadingGetAddons } = useGetAddonsByOfferIdAndTpIdentifierQuery(
+    {
+      omOfferId,
+      tariffPlanIdentifier,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  )
   const [deleteAddonsBulk, { isLoading: isLoadingDeleteAddonsBulk }] = useDeleteAddonsBulkMutation()
 
   const addons = addonsData || []
