@@ -1,9 +1,9 @@
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Grid } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
-import { TernaryColor, WhiteTeamColor } from '../consts/common'
-import { getAccordionContext } from '../helpers/common'
-import { AdditionalData, AccordionOptions } from '../types/common'
+import { AccordionOptions, AdditionalData } from '../../types/common'
+import { getAccordionContext } from '../../helpers/common'
+import { TernaryColor, WhiteTeamColor } from '../../consts/common'
 
 const AccordionItem = ({
   accordionKey,

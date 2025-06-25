@@ -2,11 +2,11 @@ import { Grid } from '@mui/material'
 import { useGetOfferTariffPlansIdentifierCountsQuery } from '../../app/apis/om/offer-tariff-plans.api'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import Spinner from '../Spinner'
-import AccordionItem from '../AccordionItem'
 import { AdditionalData, AccordionOptions, ItemName } from '../../types/common'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { useTranslation } from 'react-i18next'
+import AccordionItem from '../AccordionItems/AccordionItem'
 
 const Benefits = () => {
   const omOfferId = useAppSelector((state) => state.offer).id as string

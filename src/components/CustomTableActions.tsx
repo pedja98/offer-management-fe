@@ -12,9 +12,9 @@ import { OfferStatus } from '../types/offer'
 import { useAppSelector } from '../app/hooks'
 import { CustomTableActionsProps } from '../types/common'
 import { useState, useRef, useCallback } from 'react'
-import CustomAddAction from './CustomAddAction'
-import CustomChangeAction from './CustomChangeAction'
+import CustomAddAction from './AddActionItems/CustomAddAction'
 import { ChangeVisibleModules } from '../consts/common'
+import CustomChangeAction from './ChangeActionItems/CustomChangeAction'
 
 const CustomTableActions = ({
   searchTerm,

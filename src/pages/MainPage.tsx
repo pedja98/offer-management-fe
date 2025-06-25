@@ -1,9 +1,9 @@
 import { AccordionItems } from '../consts/common'
-import AccordionItem from '../components/AccordionItem'
 import { Grid, Typography } from '@mui/material'
 import Spinner from '../components/Spinner'
 import { useTranslation } from 'react-i18next'
 import { useGetOmOfferByIdQuery } from '../app/apis/om/offer.api'
+import AccordionItem from '../components/AccordionItems/AccordionItem'
 
 const MainPage: React.FC<{ crmOfferId: number }> = ({ crmOfferId }) => {
   const { isLoading, isError } = useGetOmOfferByIdQuery(crmOfferId)
