@@ -137,9 +137,7 @@ const AddonTable = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) 
       Object.values(addon).some(
         (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()),
       ) ||
-      (addon.name[language.toLowerCase() as keyof ItemName] || addon.name['en'] || '')
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      (addon.name[language.toLowerCase() as keyof ItemName] || '').toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesFilter = selectedFilter === 'all'
 

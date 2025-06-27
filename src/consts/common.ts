@@ -42,6 +42,7 @@ export const OmApiTags = {
   TARIFF_PLANS: 'TariffPlans',
   COMPANY: 'Company',
   OFFER: 'Offer',
+  TARIFF_PLAN_DISCOUNTS: 'TariffPlanDiscounts',
 }
 
 export const ChangeVisibleModules = [CustomTableModule.TariffPlan]

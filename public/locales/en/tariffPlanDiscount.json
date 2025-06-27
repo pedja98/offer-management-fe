@@ -1,0 +1,7 @@
+{
+  "initialDiscount": "Initial discount",
+  "additionalDiscount": "Additional discount",
+  "discountMax": "Sum of the initial and additional discount cannot exceed 100",
+  "discountUpdated": "You have changed discount successfully",
+  "discount": "Discount"
+}

@@ -10,6 +10,7 @@ import { pcApi } from './apis/core/pc.api'
 import { omApi } from './apis/core/om.api'
 import { offerTariffPlanApi } from './apis/om/offer-tariff-plans.api'
 import { offerAddonsApi } from './apis/om/offer-addons.api'
+import { offerDiscountApi } from './apis/om/offer-tariff-plan-discount.api'
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   [crmApi.reducerPath]: crmApi.reducer,
   [pcApi.reducerPath]: pcApi.reducer,
   [omApi.reducerPath]: omApi.reducer,
+  [offerDiscountApi.reducerPath]: offerDiscountApi.reducer,
   [offerTariffPlanApi.reducerPath]: offerTariffPlanApi.reducer,
   [offerAddonsApi.reducerPath]: offerAddonsApi.reducer,
 })
@@ -39,6 +41,7 @@ export const store = configureStore({
       .concat(crmApi.middleware)
       .concat(offerAddonsApi.middleware)
       .concat(offerTariffPlanApi.middleware)
+      .concat(offerDiscountApi.middleware)
       .concat(omApi.middleware)
       .concat(pcApi.middleware),
 })

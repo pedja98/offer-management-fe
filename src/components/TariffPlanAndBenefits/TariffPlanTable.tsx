@@ -148,7 +148,7 @@ const TariffPlanTable = () => {
 
   const handleConfirmDeactivation = async (id: string, checked: boolean) => {
     try {
-      await deactivateOfferTariffPlan({ id, value: checked })
+      await deactivateOfferTariffPlan({ id, value: checked, omOfferId })
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'

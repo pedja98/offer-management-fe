@@ -55,12 +55,13 @@ export const offerTariffPlanApi = createApi({
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],
     }),
-    deactivateOfferTariffPlan: builder.mutation<string, { id: string; value: boolean }>({
-      query: ({ id, value }) => ({
+    deactivateOfferTariffPlan: builder.mutation<string, { id: string; value: boolean; omOfferId: string }>({
+      query: ({ id, value, omOfferId }) => ({
         url: `/${id}/deactivate`,
         method: 'PATCH',
         body: {
           deactivate: value,
+          omOfferId,
         },
       }),
       invalidatesTags: () => [{ type: OmApiTags.TARIFF_PLANS }],

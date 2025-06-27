@@ -1,0 +1,7 @@
+{
+  "initialDiscount": "Inicijalni popust",
+  "additionalDiscount": "Dodatni popust",
+  "discountMax": "Zbir inicijalnog i dodatnog popusta ne može biti veći od 100",
+  "discountUpdated": "Uspešno ste izmenili popust",
+  "discount": "Popust"
+}
