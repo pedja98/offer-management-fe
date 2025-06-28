@@ -35,6 +35,15 @@ const ChangeStatus = () => {
   }
 
   const handleStatusChange = (newStatus: OfferStatus) => {
+    if (!offer.contractObligation) {
+      dispatch(
+        setNotification({
+          text: t('offer:contractObligationEmpty'),
+          type: NotificationType.Warning,
+        }),
+      )
+      return
+    }
     dispatch(
       showConfirm({
         confirmationText: t('offer:changeStatusConfirmationMessage', {

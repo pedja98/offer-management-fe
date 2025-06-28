@@ -10,16 +10,21 @@ import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { ApiException } from '../../types/common'
 import Spinner from '../Spinner'
+import { setRefetchDiscount } from '../../features/common.slice'
+import { OfferStatus } from '../../types/offer'
 
 const Discounts = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const offerId = useAppSelector((state) => state.offer).id as string
+  const shouldRefetchDiscount = useAppSelector((state) => state.common).refetchDiscount as boolean
+  const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
 
   const {
     data: discount,
     isLoading,
     isError,
+    refetch: refetchDiscount,
   } = useGetTariffPlanDiscountQuery({
     offerId,
     tariffPlanIdentifier,
@@ -34,6 +39,13 @@ const Discounts = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) =
       setAdditionalDiscountValue(discount.additionalDiscount)
     }
   }, [discount])
+
+  useEffect(() => {
+    if (shouldRefetchDiscount) {
+      refetchDiscount()
+      dispatch(setRefetchDiscount(false))
+    }
+  }, [refetchDiscount, shouldRefetchDiscount])
 
   if (isLoading) {
     return <Spinner />
@@ -136,6 +148,7 @@ const Discounts = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) =
         <TextField
           fullWidth
           variant='standard'
+          disabled={offerStatus !== OfferStatus.DRAFT}
           value={additionalDiscountValue}
           onChange={handleAdditionalDiscountChange}
           onBlur={handleAdditionalDiscountBlur}

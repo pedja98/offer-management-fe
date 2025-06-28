@@ -10,26 +10,22 @@ export const getAvailableStatusesForStatusChange = (
     return [OfferStatus.SALESMEN_CLOSED]
   }
 
-  if (currentStatus === OfferStatus.DRAFT && approvalLevel === OfferApprovalLevel.LEVEL_1) {
-    return [OfferStatus.L1_PENDING, OfferStatus.SALESMEN_CLOSED]
-  }
-
-  if (currentStatus === OfferStatus.DRAFT && approvalLevel === OfferApprovalLevel.LEVEL_2) {
-    return [OfferStatus.L2_PENDING, OfferStatus.SALESMEN_CLOSED]
+  if (currentStatus === OfferStatus.DRAFT) {
+    return [OfferStatus.OFFER_PENDING, OfferStatus.SALESMEN_CLOSED]
   }
 
   if (
-    currentStatus === OfferStatus.L1_PENDING &&
-    (UserType.L1_MANAGER, UserType.ADMIN).includes(userType as UserType)
-  ) {
-    return [OfferStatus.OFFER_APPROVED, OfferStatus.L1_REJECTED, OfferStatus.SALESMEN_CLOSED]
-  }
-
-  if (
-    currentStatus === OfferStatus.L2_PENDING &&
+    currentStatus === OfferStatus.OFFER_PENDING &&
     (UserType.L2_MANAGER, UserType.ADMIN).includes(userType as UserType)
   ) {
     return [OfferStatus.OFFER_APPROVED, OfferStatus.L2_REJECTED, OfferStatus.SALESMEN_CLOSED]
+  }
+
+  if (
+    currentStatus === OfferStatus.OFFER_PENDING &&
+    (UserType.L1_MANAGER, UserType.ADMIN).includes(userType as UserType)
+  ) {
+    return [OfferStatus.OFFER_APPROVED, OfferStatus.L1_REJECTED, OfferStatus.SALESMEN_CLOSED]
   }
 
   if ((OfferStatus.L2_PENDING, OfferStatus.L1_PENDING).includes(currentStatus)) {

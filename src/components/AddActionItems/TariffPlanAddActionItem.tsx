@@ -9,6 +9,7 @@ import { useCreateTariffPlansBulkMutation } from '../../app/apis/om/offer-tariff
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { useGetActiveTariffPlansQuery } from '../../app/apis/core/pc.api'
+import { setRefetchDiscount } from '../../features/common.slice'
 
 const TariffPlanAddActionItem = () => {
   const [selectedTariffPlan, setSelectedTariffPlan] = useState<PcTariffPlan | null>(null)
@@ -72,6 +73,7 @@ const TariffPlanAddActionItem = () => {
           type: NotificationType.Success,
         }),
       )
+      dispatch(setRefetchDiscount(true))
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'

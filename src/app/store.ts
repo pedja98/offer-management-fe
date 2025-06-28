@@ -4,6 +4,7 @@ import ConfirmReducer from '../features/confirm.slice'
 import NotificationReducer from '../features/notifications.slice'
 import OfferReducer from '../features/offer.slice'
 import OpportunityReducer from '../features/opportunity.slice'
+import CommonReducer from '../features/common.slice'
 import { gwApi } from './apis/core/gw.api'
 import { crmApi } from './apis/core/crm.api'
 import { pcApi } from './apis/core/pc.api'
@@ -13,6 +14,7 @@ import { offerAddonsApi } from './apis/om/offer-addons.api'
 import { offerDiscountApi } from './apis/om/offer-tariff-plan-discount.api'
 
 const rootReducer = combineReducers({
+  common: CommonReducer,
   auth: AuthReducer,
   notifications: NotificationReducer,
   confirm: ConfirmReducer,

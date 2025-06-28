@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -17,6 +17,8 @@ import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { ApiException, CustomTableModule, ItemName } from '../../types/common'
+import { setRefetchDiscount, setTariffPlanNumbers } from '../../features/common.slice'
+import { setOfferData } from '../../features/offer.slice'
 
 const TariffPlanTable = () => {
   const { t } = useTranslation()
@@ -26,6 +28,7 @@ const TariffPlanTable = () => {
   const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
   const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
   const language = useAppSelector((state) => state.auth).language
+  const numberOfTariffPlans = useAppSelector((state) => state.common).numberOfTariffPlans
 
   const { data: offerTariffPlans, isLoading: isLoadingGetOfferTP } = useGetOfferTariffPlansByOfferIdQuery(omOfferId)
   const [deactivateOfferTariffPlan] = useDeactivateOfferTariffPlanMutation()
@@ -59,6 +62,13 @@ const TariffPlanTable = () => {
     }
     setSelectedIds(newSelectedIds)
   }
+
+  useEffect(() => {
+    if (tariffPlans.length === 0) {
+      return
+    }
+    dispatch(setTariffPlanNumbers(tariffPlans.length))
+  }, [tariffPlans])
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage)
@@ -114,6 +124,11 @@ const TariffPlanTable = () => {
           type: NotificationType.Success,
         }),
       )
+      if (numberOfTariffPlans === selectedIds.size) {
+        dispatch(setOfferData({ key: 'approvalLevel', value: '' }))
+        dispatch(setTariffPlanNumbers(0))
+      }
+      dispatch(setRefetchDiscount(true))
       selectedIds.clear()
     } catch (err) {
       const errorResponse = err as { data: ApiException }
@@ -149,6 +164,7 @@ const TariffPlanTable = () => {
   const handleConfirmDeactivation = async (id: string, checked: boolean) => {
     try {
       await deactivateOfferTariffPlan({ id, value: checked, omOfferId })
+      dispatch(setRefetchDiscount(true))
     } catch (err) {
       const errorResponse = err as { data: ApiException }
       const errorCode = `tariffPlan:${errorResponse.data}` || 'general:unknownError'

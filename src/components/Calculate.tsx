@@ -12,10 +12,29 @@ const Calculate = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const offer = useAppSelector((state) => state.offer)
+  const numberOfTariffPlans = useAppSelector((state) => state.common).numberOfTariffPlans
 
   const [calculate, { isLoading }] = useCalculateMutation()
 
   const handleCalculate = () => {
+    if (numberOfTariffPlans === 0) {
+      dispatch(
+        setNotification({
+          text: t('offer:numOfTariffPlansIsZero'),
+          type: NotificationType.Warning,
+        }),
+      )
+      return
+    }
+    if (!offer.contractObligation) {
+      dispatch(
+        setNotification({
+          text: t('offer:contractObligationEmpty'),
+          type: NotificationType.Warning,
+        }),
+      )
+      return
+    }
     dispatch(
       showConfirm({
         confirmationText: t('offer:calculateConfirmationMessage'),

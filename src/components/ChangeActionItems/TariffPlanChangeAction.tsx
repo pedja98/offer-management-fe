@@ -9,6 +9,7 @@ import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { useUpdateTariffPlansBulkMutation } from '../../app/apis/om/offer-tariff-plans.api'
 import { useGetActiveTariffPlansQuery } from '../../app/apis/core/pc.api'
+import { setRefetchDiscount } from '../../features/common.slice'
 
 const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) => {
   const [selectedTariffPlan, setSelectedTariffPlan] = useState<PcTariffPlan | null>(null)
@@ -61,6 +62,7 @@ const TariffPlanChangeAction = ({ selectedIds }: { selectedIds: Set<string> }) =
           type: NotificationType.Success,
         }),
       )
+      dispatch(setRefetchDiscount(true))
       selectedIds.clear()
     } catch (err) {
       const errorResponse = err as { data: ApiException }

@@ -95,3 +95,8 @@ export interface CustomChangeActionProps {
 export interface AdditionalData {
   identifier: string
 }
+
+export interface CommonState {
+  numberOfTariffPlans: number
+  refetchDiscount: boolean
+}

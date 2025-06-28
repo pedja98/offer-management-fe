@@ -8,12 +8,15 @@
   "approvalDescription": "Opis",
   "approvalLevel": "Nivo odobrenja",
   "calculateSuccessful": "Kalkulacija je uspešno izvršena",
+  "numOfTariffPlansIsZero": "Neophodno je da broj tarifnih planova bude veći od nule kako bi ste izvršili akciju",
+  "contractObligationEmpty": "Neophodno je da popunite ugovornu obaveyu kako bi ste izvršili akciju",
   "approvalLevels": {
     "LEVEL_1": "Level 1",
     "LEVEL_2": "Level 2"
   },
   "statuses": {
     "draft": "Nacrt",
+    "offer_pending": "Na čekanju",
     "l1_pending": "L1 na čekanju",
     "l2_pending": "L2 na čekanju",
     "salesmen_closed": "Zatvoreno",

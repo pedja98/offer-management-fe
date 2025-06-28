@@ -23,10 +23,10 @@ export const offerApi = gwApi.injectEndpoints({
       }
     >({
       query: ({ omOfferId, crmOfferId, oldStatus, newStatus, approvalLevel }) => ({
-        url: `/offers/statuses/${crmOfferId}`,
+        url: `/offers/statuses/${omOfferId}`,
         method: 'PATCH',
         body: {
-          omOfferId,
+          crmOfferId,
           oldStatus,
           newStatus,
           approvalLevel,

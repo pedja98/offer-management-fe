@@ -27,6 +27,7 @@ export enum OfferApprovalLevel {
 
 export enum OfferStatus {
   DRAFT = 'DRAFT',
+  OFFER_PENDING = 'OFFER_PENDING',
   L1_PENDING = 'L1_PENDING',
   L2_PENDING = 'L2_PENDING',
   SALESMEN_CLOSED = 'SALESMEN_CLOSED',
