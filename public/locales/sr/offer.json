@@ -1,7 +1,6 @@
 {
   "name": "Ime ponude",
   "status": "Status ponude",
-  "mmc": "MMC",
   "calculate": "Kalkuliši",
   "calculateConfirmationMessage": "Da li ste sigurni da želite da izvršite kalkulaciju?",
   "contractObligation": "Ugovorna obaveza",
@@ -29,5 +28,6 @@
   },
   "changeStatus": "Izmeni status",
   "changeStatusConfirmationMessage": "Da li ste sigurni da želite da promenite status ponude u {{newStatus}}?",
-  "statusChanged": "Status ponude je uspešno izmenjen"
+  "statusChanged": "Status ponude je uspešno izmenjen",
+  "notAllowedToChangeToStatus": "Nije Vam dozvoljeno da promenite status ponude"
 }

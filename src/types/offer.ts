@@ -9,7 +9,6 @@ export interface Offer {
   modifiedByUsername?: string
   dateCreated?: string
   dateModified?: string
-  mmc?: number
   contractObligation?: number
   approvalDescription?: string
   approvalLevel?: OfferApprovalLevel

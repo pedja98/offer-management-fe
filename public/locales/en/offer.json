@@ -1,7 +1,6 @@
 {
   "name": "Offer name",
   "status": "Offer status",
-  "mmc": "MMC",
   "calculate": "Calculate",
   "calculateConfirmationMessage": "Are you sure that you want to perform the calculation?",
   "contractObligation": "Contract obligation",
@@ -29,5 +28,6 @@
   },
   "changeStatus": "Change status",
   "changeStatusConfirmationMessage": "Are you sure that you want to change offer status into {{newStatus}}?",
-  "statusChanged": "Offer status has been changed successfully"
+  "statusChanged": "Offer status has been changed successfully",
+  "notAllowedToChangeToStatus": "You are not allowed to change status of offer"
 }

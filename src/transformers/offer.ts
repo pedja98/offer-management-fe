@@ -10,7 +10,6 @@ export const getOfferGridDataLabels = (t: TFunction): GridLabel[] => [
   { text: t('opportunity:name'), key: 'opportunityName' },
   { text: t('opportunity:status'), key: 'opportunityStatus' },
   { text: t('opportunity:type'), key: 'opportunityType' },
-  { text: t('offer:mmc'), key: 'mmc' },
   { text: t('offer:contractObligation'), key: 'contractObligation' },
 ]
 
@@ -22,10 +21,6 @@ export const getOfferGridData = (t: TFunction, offer: Offer, opportunity: Opport
   status: {
     type: GridFieldTypes.NON_EDITABLE,
     value: t(`offer:statuses.${offer.status?.toLocaleLowerCase()}`).toUpperCase(),
-  },
-  mmc: {
-    value: offer.mmc,
-    type: offer.status === OfferStatus.DRAFT ? GridFieldTypes.NUMBER : GridFieldTypes.NON_EDITABLE,
   },
   contractObligation: {
     value: offer.contractObligation,

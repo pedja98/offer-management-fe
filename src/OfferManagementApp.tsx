@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useAppDispatch } from './app/hooks'
 import { OfferManagementProps } from './types/common'
 import { setAuthData } from './features/auth.slice'
 import { changeLanguageManually } from './utils/i18n'
@@ -15,10 +14,8 @@ import Confirm from './components/Confirm'
 import MainPage from './pages/MainPage'
 
 const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
-  const dispatch = useAppDispatch()
-
   useEffect(() => {
-    dispatch(
+    store.dispatch(
       setAuthData({
         username: props.username,
         type: props.type,
@@ -26,7 +23,7 @@ const OfferManagementApp: React.FC<OfferManagementProps> = (props) => {
       }),
     )
     changeLanguageManually(props.language || Language.SR)
-  }, [])
+  }, [props.username, props.type, props.language])
 
   return (
     <Provider store={store}>
