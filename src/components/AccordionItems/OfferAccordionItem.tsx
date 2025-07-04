@@ -10,8 +10,6 @@ import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { ApiException } from '../../types/common'
 import { useUpdateOmOfferAttributeMutation } from '../../app/apis/om/offer.api'
-import { useGetOpportunityByIdQuery } from '../../app/apis/crm/opportunity.api'
-import Spinner from '../Spinner'
 
 const OfferAccordionItem = () => {
   const { t } = useTranslation()
@@ -19,24 +17,9 @@ const OfferAccordionItem = () => {
   const [updateOmOfferAttribute] = useUpdateOmOfferAttributeMutation()
 
   const offer = useAppSelector((state) => state.offer)
-  const { isLoading, isError, data: opportunity } = useGetOpportunityByIdQuery(String(offer.opportunityId))
-
-  if (isLoading) {
-    return <Spinner />
-  }
-
-  if (isError || !opportunity) {
-    dispatch(
-      setNotification({
-        text: t('opportunity:retrievingDataError'),
-        type: NotificationType.Error,
-      }),
-    )
-    return null
-  }
 
   const labels = getOfferGridDataLabels(t)
-  const offerGridData = getOfferGridData(t, offer, opportunity)
+  const offerGridData = getOfferGridData(t, offer)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target

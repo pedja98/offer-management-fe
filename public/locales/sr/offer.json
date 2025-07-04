@@ -29,5 +29,13 @@
   "changeStatus": "Izmeni status",
   "changeStatusConfirmationMessage": "Da li ste sigurni da želite da promenite status ponude u {{newStatus}}?",
   "statusChanged": "Status ponude je uspešno izmenjen",
-  "notAllowedToChangeToStatus": "Nije Vam dozvoljeno da promenite status ponude"
+  "notAllowedToChangeToStatus": "Nije Vam dozvoljeno da promenite status ponude",
+  "opportunityTypes": {
+    "acquisition": "Akvizicija",
+    "renewal": "Obnova",
+    "change": "Izmena",
+    "termination": "Raskid"
+  },
+  "opportunityType": "Tip poslovne prilike",
+  "opportunityName": "Poslovan prilika"
 }

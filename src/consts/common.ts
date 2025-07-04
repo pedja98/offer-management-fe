@@ -38,7 +38,6 @@ export const TableRowPerPage = 10
 
 export const OmApiTags = {
   ADDONS: 'Addons',
-  OPPORTUNITY: 'Opportunity',
   TARIFF_PLANS: 'TariffPlans',
   COMPANY: 'Company',
   OFFER: 'Offer',

@@ -1,4 +1,3 @@
-import { Opportunity } from './../types/opportunity'
 import { TFunction } from 'i18next'
 import { GridLabel, PageElement } from '../types/common'
 import { Offer, OfferStatus } from '../types/offer'
@@ -7,13 +6,12 @@ import { GridFieldTypes } from '../consts/common'
 export const getOfferGridDataLabels = (t: TFunction): GridLabel[] => [
   { text: t('offer:name'), key: 'name' },
   { text: t('offer:status'), key: 'status' },
-  { text: t('opportunity:name'), key: 'opportunityName' },
-  { text: t('opportunity:status'), key: 'opportunityStatus' },
-  { text: t('opportunity:type'), key: 'opportunityType' },
+  { text: t('offer:opportunityName'), key: 'opportunityName' },
+  { text: t('offer:opportunityType'), key: 'opportunityType' },
   { text: t('offer:contractObligation'), key: 'contractObligation' },
 ]
 
-export const getOfferGridData = (t: TFunction, offer: Offer, opportunity: Opportunity): PageElement => ({
+export const getOfferGridData = (t: TFunction, offer: Offer): PageElement => ({
   name: {
     value: offer.name,
     type: GridFieldTypes.NON_EDITABLE,
@@ -28,14 +26,10 @@ export const getOfferGridData = (t: TFunction, offer: Offer, opportunity: Opport
   },
   opportunityName: {
     type: GridFieldTypes.NON_EDITABLE,
-    value: opportunity.name,
-  },
-  opportunityStatus: {
-    type: GridFieldTypes.NON_EDITABLE,
-    value: t(`opportunity:opportunityStatuses.${opportunity.status?.toLocaleLowerCase()}`).toUpperCase(),
+    value: offer.opportunityName,
   },
   opportunityType: {
     type: GridFieldTypes.NON_EDITABLE,
-    value: t(`opportunity:opportunityTypes.${opportunity.type?.toLocaleLowerCase()}`).toUpperCase(),
+    value: t(`offer:opportunityTypes.${offer.opportunityType?.toLocaleLowerCase()}`).toUpperCase(),
   },
 })

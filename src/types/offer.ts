@@ -12,6 +12,8 @@ export interface Offer {
   contractObligation?: number
   approvalDescription?: string
   approvalLevel?: OfferApprovalLevel
+  opportunityType?: OpportunityType
+  opportunityName?: string
 }
 
 export interface OfferCalculateResponse {
@@ -36,4 +38,11 @@ export enum OfferStatus {
   OFFER_APPROVED = 'OFFER_APPROVED',
   CUSTOMER_ACCEPTED = 'CUSTOMER_ACCEPTED',
   CONCLUDED = 'CONCLUDED',
+}
+
+export enum OpportunityType {
+  ACQUISITION = 'ACQUISITION',
+  RENEWAL = 'RENEWAL',
+  CHANGE = 'CHANGE',
+  TERMINATION = 'TERMINATION',
 }

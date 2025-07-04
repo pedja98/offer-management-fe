@@ -12,7 +12,7 @@ import CustomTable from '../CustomTable'
 import CustomTableActions from '../CustomTableActions'
 import { getTariffPlansTableColumnsLabels, transformTariffPlansIntoTableData } from '../../transformers/tariffPlans'
 import { OfferStatus } from '../../types/offer'
-import { OpportunityType } from '../../types/opportunity'
+import { OpportunityType } from '../../types/offer'
 import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
@@ -26,7 +26,7 @@ const TariffPlanTable = () => {
 
   const omOfferId = useAppSelector((state) => state.offer).id as string
   const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
-  const opportunityType = useAppSelector((state) => state.opportunity).type as OpportunityType
+  const opportunityType = useAppSelector((state) => state.offer).opportunityType as OpportunityType
   const language = useAppSelector((state) => state.auth).language
   const numberOfTariffPlans = useAppSelector((state) => state.common).numberOfTariffPlans
 
