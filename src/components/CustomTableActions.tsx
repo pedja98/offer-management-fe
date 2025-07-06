@@ -8,8 +8,6 @@ import {
   SwapVerticalCircleOutlined,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import { OfferStatus } from '../types/offer'
-import { useAppSelector } from '../app/hooks'
 import { CustomTableActionsProps, CustomTableModule } from '../types/common'
 import { useState, useRef, useCallback } from 'react'
 import CustomAddAction from './AddActionItems/CustomAddAction'
@@ -17,6 +15,7 @@ import { ChangeVisibleModules } from '../consts/common'
 import CustomChangeAction from './ChangeActionItems/CustomChangeAction'
 
 const CustomTableActions = ({
+  actionsDisabled,
   searchTerm,
   onSearchChange,
   onClearSearch,
@@ -31,7 +30,6 @@ const CustomTableActions = ({
   additionalData,
 }: CustomTableActionsProps) => {
   const { t } = useTranslation()
-  const offerStatus = useAppSelector((state) => state.offer).status
 
   const addButtonRef = useRef<HTMLButtonElement>(null)
   const changeButtonRef = useRef<HTMLButtonElement>(null)
@@ -101,12 +99,7 @@ const CustomTableActions = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Grid>
-          <IconButton
-            ref={addButtonRef}
-            onClick={handleAddClick}
-            color='primary'
-            disabled={offerStatus !== OfferStatus.DRAFT}
-          >
+          <IconButton ref={addButtonRef} onClick={handleAddClick} color='primary' disabled={actionsDisabled}>
             <AddIcon />
           </IconButton>
 
@@ -131,11 +124,7 @@ const CustomTableActions = ({
           </Menu>
         </Grid>
 
-        <IconButton
-          onClick={onDelete}
-          color='primary'
-          disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
-        >
+        <IconButton onClick={onDelete} color='primary' disabled={selectedCount === 0 || actionsDisabled}>
           <DeleteIcon />
         </IconButton>
 
@@ -145,7 +134,7 @@ const CustomTableActions = ({
               ref={changeButtonRef}
               onClick={handleChangeClick}
               color='primary'
-              disabled={selectedCount === 0 || offerStatus !== OfferStatus.DRAFT}
+              disabled={selectedCount === 0 || actionsDisabled}
             >
               <SwapVerticalCircleOutlined />
             </IconButton>

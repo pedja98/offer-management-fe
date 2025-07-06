@@ -66,7 +66,7 @@ const ApprovalAccordionItem = () => {
               name='approvalDescription'
               label={t('offer:approvalDescription')}
               variant='standard'
-              value={approvalDescription}
+              value={approvalDescription || ''}
               minRows={5}
               multiline
               fullWidth

@@ -19,5 +19,6 @@
   "tariffPlan": "Tarifni plan",
   "quantity": "Količina",
   "addTariffPlans": "Uspešno ste dodali nove tarifne planove na ponudu",
-  "tariffPlansUpdated": "Uspešno ste izmenili tarifne plan/ove"
+  "tariffPlansUpdated": "Uspešno ste izmenili tarifne plan/ove",
+  "canNotDeletePlannedTp": "Ne možete obrisati tarifni plan koji je planiran"
 }

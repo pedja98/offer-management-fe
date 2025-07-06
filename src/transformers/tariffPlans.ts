@@ -45,7 +45,7 @@ export const transformTariffPlansIntoTableData = (
   deactivate: {
     value: tariffPlan.deactivate,
     type: GridFieldTypes.CHECKBOX,
-    disabled: disabledDeactivation,
+    disabled: disabledDeactivation || !tariffPlan.plannedTpIdentifier,
     handleCheckBoxCheck: handleDeactivate,
   },
 })

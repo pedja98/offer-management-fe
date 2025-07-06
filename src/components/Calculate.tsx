@@ -5,7 +5,7 @@ import { hideConfirm, showConfirm } from '../features/confirm.slice'
 import { setNotification } from '../features/notifications.slice'
 import { NotificationType } from '../types/notification'
 import { ButtonStyled } from '../styles/common'
-import { OfferStatus } from '../types/offer'
+import { OfferStatus, OpportunityType } from '../types/offer'
 import { Grid } from '@mui/material'
 
 const Calculate = () => {
@@ -26,7 +26,7 @@ const Calculate = () => {
       )
       return
     }
-    if (!offer.contractObligation) {
+    if (!offer.contractObligation && offer.opportunityType !== OpportunityType.TERMINATION) {
       dispatch(
         setNotification({
           text: t('offer:contractObligationEmpty'),

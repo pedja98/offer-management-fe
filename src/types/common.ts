@@ -58,6 +58,7 @@ export interface CustomTableProps {
 }
 
 export interface CustomTableActionsProps {
+  actionsDisabled: boolean
   searchTerm: string
   onSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void

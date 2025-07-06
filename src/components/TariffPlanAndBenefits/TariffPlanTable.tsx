@@ -118,6 +118,9 @@ const TariffPlanTable = () => {
   const handleConfirmDeletion = async () => {
     try {
       const result = await deleteTariffPlansBulk({ body: Array.from(selectedIds), omOfferId })
+      if (result && result.error) {
+        throw result.error
+      }
       dispatch(
         setNotification({
           text: t(`tariffPlan:${result.data?.message}`),
@@ -200,7 +203,9 @@ const TariffPlanTable = () => {
     return matchesSearch && matchesFilter
   })
 
-  const disabledDeactivation = offerStatus !== OfferStatus.DRAFT || opportunityType === OpportunityType.ACQUISITION
+  const disabledDeactivation =
+    offerStatus !== OfferStatus.DRAFT ||
+    [OpportunityType.ACQUISITION, OpportunityType.TERMINATION].includes(opportunityType)
 
   const filteredTpIds = filteredTp?.map((tariffPlan) => tariffPlan.id) || []
   const filteredTpRows =
@@ -221,9 +226,12 @@ const TariffPlanTable = () => {
     )
   }
 
+  const areActionsDisabled = offerStatus !== OfferStatus.DRAFT || opportunityType === OpportunityType.TERMINATION
+
   return (
     <Box sx={{ width: '100%' }}>
       <CustomTableActions
+        actionsDisabled={areActionsDisabled}
         selectedIds={selectedIds}
         module={CustomTableModule.TariffPlan}
         searchTerm={searchTerm}

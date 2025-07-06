@@ -14,12 +14,15 @@ import { hideConfirm, showConfirm } from '../../features/confirm.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
 import { AdditionalData, ApiException, CustomTableModule, ItemName } from '../../types/common'
+import { OfferStatus, OpportunityType } from '../../types/offer'
 
 const AddonTable = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const omOfferId = useAppSelector((state) => state.offer).id as string
+  const offerStatus = useAppSelector((state) => state.offer).status as OfferStatus
+  const opportunityType = useAppSelector((state) => state.offer).opportunityType as OpportunityType
   const language = useAppSelector((state) => state.auth).language
 
   const { data: addonsData, isLoading: isLoadingGetAddons } = useGetAddonsByOfferIdAndTpIdentifierQuery(
@@ -165,9 +168,12 @@ const AddonTable = ({ tariffPlanIdentifier }: { tariffPlanIdentifier: string }) 
     )
   }
 
+  const areActionsDisabled = offerStatus !== OfferStatus.DRAFT || opportunityType === OpportunityType.TERMINATION
+
   return (
     <Box sx={{ width: '100%' }}>
       <CustomTableActions
+        actionsDisabled={areActionsDisabled}
         selectedIds={selectedIds}
         module={CustomTableModule.Addon}
         searchTerm={searchTerm}

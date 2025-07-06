@@ -4,7 +4,7 @@ import { getOfferGridData, getOfferGridDataLabels } from '../../transformers/off
 import { FormLabel, Grid, TextField, Typography } from '@mui/material'
 import { GridFieldTypes } from '../../consts/common'
 import { ChangeEvent, FocusEvent } from 'react'
-import { Offer } from '../../types/offer'
+import { Offer, OpportunityType } from '../../types/offer'
 import { setOfferData } from '../../features/offer.slice'
 import { setNotification } from '../../features/notifications.slice'
 import { NotificationType } from '../../types/notification'
@@ -18,8 +18,8 @@ const OfferAccordionItem = () => {
 
   const offer = useAppSelector((state) => state.offer)
 
-  const labels = getOfferGridDataLabels(t)
-  const offerGridData = getOfferGridData(t, offer)
+  const labels = getOfferGridDataLabels(t, offer.opportunityType === OpportunityType.TERMINATION)
+  const offerGridData = getOfferGridData(t, offer, offer.opportunityType === OpportunityType.CHANGE)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target

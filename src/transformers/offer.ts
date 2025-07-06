@@ -3,15 +3,22 @@ import { GridLabel, PageElement } from '../types/common'
 import { Offer, OfferStatus } from '../types/offer'
 import { GridFieldTypes } from '../consts/common'
 
-export const getOfferGridDataLabels = (t: TFunction): GridLabel[] => [
-  { text: t('offer:name'), key: 'name' },
-  { text: t('offer:status'), key: 'status' },
-  { text: t('offer:opportunityName'), key: 'opportunityName' },
-  { text: t('offer:opportunityType'), key: 'opportunityType' },
-  { text: t('offer:contractObligation'), key: 'contractObligation' },
-]
+export const getOfferGridDataLabels = (t: TFunction, hideContractObligation: boolean): GridLabel[] => {
+  const labels = [
+    { text: t('offer:name'), key: 'name' },
+    { text: t('offer:status'), key: 'status' },
+    { text: t('offer:opportunityName'), key: 'opportunityName' },
+    { text: t('offer:opportunityType'), key: 'opportunityType' },
+  ]
 
-export const getOfferGridData = (t: TFunction, offer: Offer): PageElement => ({
+  if (!hideContractObligation) {
+    labels.push({ text: t('offer:contractObligation'), key: 'contractObligation' })
+  }
+
+  return labels
+}
+
+export const getOfferGridData = (t: TFunction, offer: Offer, disableContractObligation: boolean): PageElement => ({
   name: {
     value: offer.name,
     type: GridFieldTypes.NON_EDITABLE,
@@ -22,7 +29,10 @@ export const getOfferGridData = (t: TFunction, offer: Offer): PageElement => ({
   },
   contractObligation: {
     value: offer.contractObligation,
-    type: offer.status === OfferStatus.DRAFT ? GridFieldTypes.NUMBER : GridFieldTypes.NON_EDITABLE,
+    type:
+      offer.status === OfferStatus.DRAFT && !disableContractObligation
+        ? GridFieldTypes.NUMBER
+        : GridFieldTypes.NON_EDITABLE,
   },
   opportunityName: {
     type: GridFieldTypes.NON_EDITABLE,
