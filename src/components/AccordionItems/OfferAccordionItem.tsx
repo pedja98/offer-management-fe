@@ -19,7 +19,7 @@ const OfferAccordionItem = () => {
   const offer = useAppSelector((state) => state.offer)
 
   const labels = getOfferGridDataLabels(t, offer.opportunityType === OpportunityType.TERMINATION)
-  const offerGridData = getOfferGridData(t, offer, offer.opportunityType === OpportunityType.CHANGE)
+  const offerGridData = getOfferGridData(t, offer)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target

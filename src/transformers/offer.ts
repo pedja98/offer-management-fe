@@ -18,7 +18,7 @@ export const getOfferGridDataLabels = (t: TFunction, hideContractObligation: boo
   return labels
 }
 
-export const getOfferGridData = (t: TFunction, offer: Offer, disableContractObligation: boolean): PageElement => ({
+export const getOfferGridData = (t: TFunction, offer: Offer): PageElement => ({
   name: {
     value: offer.name,
     type: GridFieldTypes.NON_EDITABLE,
@@ -29,10 +29,7 @@ export const getOfferGridData = (t: TFunction, offer: Offer, disableContractObli
   },
   contractObligation: {
     value: offer.contractObligation,
-    type:
-      offer.status === OfferStatus.DRAFT && !disableContractObligation
-        ? GridFieldTypes.NUMBER
-        : GridFieldTypes.NON_EDITABLE,
+    type: offer.status === OfferStatus.DRAFT ? GridFieldTypes.NUMBER : GridFieldTypes.NON_EDITABLE,
   },
   opportunityName: {
     type: GridFieldTypes.NON_EDITABLE,
